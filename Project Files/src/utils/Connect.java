@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
+import java.sql.SQLException;
 import java.sql.Statement;
 
 public class Connect {
@@ -36,6 +37,17 @@ public class Connect {
 			connect = new Connect();
 		}
 		return connect;
+	}
+	
+	public ResultSet execQuery(String query) {
+		try {
+			rs = st.executeQuery(query);
+			rsm = rs.getMetaData();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return rs;
 	}
 	
 }
