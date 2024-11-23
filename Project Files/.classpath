@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="D:/Kuliah/Semester 5/Object Oriented Analysis &amp; Design/LAB FINAL PROJECT/be992b30-4b38-4361-8404-25f2d6912754_bd69d85c-5d60-ef11-a1bf-9440c921bcaf_622d7db4-c910-ec11-90f0-d8d38/Project Files/mysql-connector-j-9.0.0.jar">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
