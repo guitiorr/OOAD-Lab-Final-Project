@@ -1,14 +1,21 @@
 package view;
 
+import controller.UserController;
+import connection.UserDAO;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
+import java.sql.Connection;
 
 public class RegisterView {
 
     private GridPane gridPane;
+    private UserController userController;
 
     public RegisterView() {
+        // Initialize UserController
+        userController = new UserController();
+
         // Create a GridPane layout
         gridPane = new GridPane();
         gridPane.setPadding(new Insets(10));
@@ -46,18 +53,21 @@ public class RegisterView {
         // Roles Radio Buttons
         Label roleLabel = new Label("Role:");
         RadioButton sellerRadio = new RadioButton("Seller");
+        RadioButton buyerRadio = new RadioButton("Buyer");
         ToggleGroup roleGroup = new ToggleGroup();
         sellerRadio.setToggleGroup(roleGroup);
+        buyerRadio.setToggleGroup(roleGroup);
         gridPane.add(roleLabel, 0, 4);
         gridPane.add(sellerRadio, 1, 4);
+        gridPane.add(buyerRadio, 1, 5);
 
         // Register Button
         Button registerButton = new Button("Register");
-        gridPane.add(registerButton, 1, 5);
+        gridPane.add(registerButton, 1, 6);
 
         // Validation Message
         Label validationLabel = new Label();
-        gridPane.add(validationLabel, 1, 6);
+        gridPane.add(validationLabel, 1, 7);
 
         // Register Button Action
         registerButton.setOnAction(e -> {
@@ -67,33 +77,37 @@ public class RegisterView {
             String address = addressField.getText();
             RadioButton selectedRole = (RadioButton) roleGroup.getSelectedToggle();
 
-            if (username.isEmpty() || username.length() < 3) {
-                validationLabel.setText("Username must be at least 3 characters long and cannot be empty.");
+            String role = selectedRole != null ? selectedRole.getText() : null;
+
+            // Validation
+            if (username.isEmpty() || password.isEmpty() || phone.isEmpty() || address.isEmpty() || role == null) {
+                validationLabel.setText("All fields must be filled out, and a role must be selected.");
                 return;
             }
 
-            if (password.isEmpty() || password.length() < 8 || !password.matches(".*[!@#$%^&*].*")) {
-                validationLabel.setText("Password must be at least 8 characters long and include a special character.");
-                return;
-            }
+            // Generate unique ID
+            String newID = generateUserID();
 
-            if (!phone.matches("^\\+62\\d{10}$")) {
-                validationLabel.setText("Phone number must start with +62 and be 10 digits long.");
-                return;
-            }
-
-            if (address.isEmpty()) {
-                validationLabel.setText("Address cannot be empty.");
-                return;
-            }
-
-            if (selectedRole == null) {
-                validationLabel.setText("You must select a role.");
-                return;
-            }
-
+            // Call UserController to handle registration
+            userController.insertUser(newID, username, phone, address, role, password);
             validationLabel.setText("Registration successful!");
+            clearFields(usernameField, passwordField, phoneField, addressField, roleGroup);
         });
+    }
+
+    // Method to generate unique user IDs
+    private String generateUserID() {
+        int nextID = userController.getAllUser().size() + 1;
+        return String.format("US%03d", nextID);
+    }
+
+    // Method to clear input fields after successful registration
+    private void clearFields(TextField usernameField, PasswordField passwordField, TextField phoneField, TextField addressField, ToggleGroup roleGroup) {
+        usernameField.clear();
+        passwordField.clear();
+        phoneField.clear();
+        addressField.clear();
+        roleGroup.selectToggle(null);
     }
 
     // Method to return the view (GridPane)
