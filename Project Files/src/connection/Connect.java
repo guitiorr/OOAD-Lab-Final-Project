@@ -2,6 +2,7 @@ package connection;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
@@ -48,6 +49,25 @@ public class Connect {
 			e.printStackTrace();
 		}
 		return rs;
+	}
+	
+	public void execUpdate(String Query) {
+		try {
+			st.executeUpdate(Query);
+		} catch (SQLException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public PreparedStatement preparedStatement(String query) {
+		PreparedStatement ps = null;
+		try {
+			ps = con.prepareStatement(query);
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return ps;
 	}
 	
 }

@@ -2,19 +2,39 @@ package models;
 
 public class User {
 	
+	private String ID;
 	private String username;
 	private String password;
 	private String phoneNumber;
 	private String address;
 	private String role;
 	
-	public User(String username, String password, String phoneNumber, String address, String role) {
+	public User(String ID, String username, String password, String phoneNumber, String address, String role) {
 		super();
+		this.ID = ID;
 		this.username = username;
 		this.password = password;
 		this.phoneNumber = phoneNumber;
 		this.address = address;
 		this.role = role;
+	}
+	
+	public void Login(String username, String password) {
+		
+	}
+	
+	public void Register(String username, String password, String phoneNumber, String address) {
+		
+	}
+	
+	public void CheckAccountValidation(String username, String password, String phoneNumber, String address) {
+		
+	}
+	
+	
+
+	public String getID() {
+		return ID;
 	}
 
 	public String getUsername() {
