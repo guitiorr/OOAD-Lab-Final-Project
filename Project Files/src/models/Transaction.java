@@ -23,4 +23,30 @@ public class Transaction {
 	public void CreateTransaction(String transactionID) {
 		
 	}
+
+	public String getTransactionID() {
+		return transactionID;
+	}
+
+	public String getUserID() {
+		return userID;
+	}
+
+	public String getItemID() {
+		return itemID;
+	}
+
+	public void setTransactionID(String transactionID) {
+		this.transactionID = transactionID;
+	}
+
+	public void setUserID(String userID) {
+		this.userID = userID;
+	}
+
+	public void setItemID(String itemID) {
+		this.itemID = itemID;
+	}
+	
+	
 }
