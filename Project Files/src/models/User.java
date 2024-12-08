@@ -1,5 +1,7 @@
 package models;
 
+import connection.UserDAO;
+
 public class User {
 	
 	private String ID;
@@ -19,9 +21,14 @@ public class User {
 		this.role = role;
 	}
 	
-	public void Login(String username, String password) {
-		
-	}
+//	public void Login(String username, String password) {
+//		
+//	}
+	
+	public boolean login() {
+        UserDAO userDAO = new UserDAO();
+        return userDAO.validateCredentials(this.username, this.password);
+    }
 	
 	public void Register(String username, String password, String phoneNumber, String address) {
 		

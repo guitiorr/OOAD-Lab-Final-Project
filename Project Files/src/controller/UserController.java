@@ -36,4 +36,8 @@ public class UserController {
     public void deleteUser(String userID) {
         userDAO.deleteUser(userID);
     }
+    
+    public boolean validateUser(String username, String password) {
+        return userDAO.validateCredentials(username, password);
+    }
 }
