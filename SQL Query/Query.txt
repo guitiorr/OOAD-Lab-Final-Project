@@ -7,11 +7,4 @@ CREATE TABLE Users (
     role VARCHAR(50) NOT NULL
 );
 
-INSERT INTO Users (username, password, phoneNumber, address, role) VALUES
-('john_doe', 'password123', '1234567890', '123 Maple Street, Springfield', 'seller'),
-('admin_user', 'adminPass456', '9876543210', '456 Oak Avenue, Metropolis', 'admin'),
-('jane_smith', 'securePass789', '5551234567', '789 Pine Road, Gotham', 'seller'),
-('alice_wonder', 'magicKey007', '8889997777', '1600 Wonderland Ave, Neverland', 'admin'),
-('bob_builder', 'fixIt2023', '1112223333', '42 Repair Lane, Fixville', 'seller');
-
 

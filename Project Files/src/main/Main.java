@@ -12,7 +12,7 @@ public class Main extends Application {
         primaryStage.setTitle("Main Application");
 
         RegisterView registerView = new RegisterView();
-        Scene scene = new Scene(registerView.getView(), 400, 300);
+        Scene scene = new Scene(registerView.getView(), 800, 600);
 
         primaryStage.setScene(scene);
         primaryStage.show();

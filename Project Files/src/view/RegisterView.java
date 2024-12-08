@@ -1,11 +1,9 @@
 package view;
 
 import controller.UserController;
-import connection.UserDAO;
 import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
-import java.sql.Connection;
 
 public class RegisterView {
 
@@ -76,11 +74,22 @@ public class RegisterView {
             String phone = phoneField.getText();
             String address = addressField.getText();
             RadioButton selectedRole = (RadioButton) roleGroup.getSelectedToggle();
-
             String role = selectedRole != null ? selectedRole.getText() : null;
 
-            // Validation
-            if (username.isEmpty() || password.isEmpty() || phone.isEmpty() || address.isEmpty() || role == null) {
+            // Validate inputs
+            if (!validateUsername(username)) {
+                validationLabel.setText("Username must be at least 3 characters long and cannot be empty.");
+                return;
+            }
+            if (!validatePassword(password)) {
+                validationLabel.setText("Password must be at least 8 characters long and include a special character (!, @, #, $, %, ^, &, *).");
+                return;
+            }
+            if (!validatePhoneNumber(phone)) {
+                validationLabel.setText("Phone number must start with +62 and be at least 10 digits long.");
+                return;
+            }
+            if (address.isEmpty() || role == null) {
                 validationLabel.setText("All fields must be filled out, and a role must be selected.");
                 return;
             }
@@ -93,6 +102,21 @@ public class RegisterView {
             validationLabel.setText("Registration successful!");
             clearFields(usernameField, passwordField, phoneField, addressField, roleGroup);
         });
+    }
+
+    // Validate Username
+    private boolean validateUsername(String username) {
+        return username != null && username.length() >= 3;
+    }
+
+    // Validate Password
+    private boolean validatePassword(String password) {
+        return password != null && password.length() >= 8 && password.matches(".*[!@#$%^&*].*");
+    }
+
+    // Validate Phone Number
+    private boolean validatePhoneNumber(String phone) {
+        return phone != null && phone.startsWith("+62") && phone.length() >= 12; // +62 counts as 3 characters
     }
 
     // Method to generate unique user IDs
