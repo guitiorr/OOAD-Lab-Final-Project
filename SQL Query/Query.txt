@@ -7,6 +7,29 @@ CREATE TABLE Users (
     role VARCHAR(50) NOT NULL
 );
 
+CREATE TABLE Item (
+    itemId VARCHAR(255) PRIMARY KEY,
+    itemName VARCHAR(255) NOT NULL,
+    itemSize VARCHAR(50),
+    itemPrice DECIMAL(10, 2) NOT NULL,
+    itemCategory VARCHAR(100),
+    itemStatus VARCHAR(50) NOT NULL,
+    itemWishlist BOOLEAN DEFAULT FALSE,
+    itemOfferStatus VARCHAR(50)
+);
+
+
+INSERT INTO Item (itemId, itemName, itemSize, itemPrice, itemCategory, itemStatus, itemWishlist)
+VALUES ('IT001', 'Laptop', '15.6 inch', 899.99, 'Electronics', 'Available', FALSE);
+INSERT INTO Item (itemId, itemName, itemSize, itemPrice, itemCategory, itemStatus, itemWishlist)
+VALUES ('IT002', 'Smartphone', '6.5 inch', 499.99, 'Electronics', 'Available', FALSE);
+INSERT INTO Item (itemId, itemName, itemSize, itemPrice, itemCategory, itemStatus, itemWishlist)
+VALUES ('IT003', 'T-Shirt', 'M', 19.99, 'Clothing', 'Available', FALSE);
+INSERT INTO Item (itemId, itemName, itemSize, itemPrice, itemCategory, itemStatus, itemWishlist)
+VALUES ('IT004', 'Jeans', '32', 39.99, 'Clothing', 'Available', FALSE);
+INSERT INTO Item (itemId, itemName, itemSize, itemPrice, itemCategory, itemStatus, itemWishlist)
+VALUES ('IT005', 'Sneakers', '9', 79.99, 'Shoes', 'Available', FALSE);
+
 
 INSERT INTO Users (ID, username, password, phoneNumber, address, role)
 VALUES ('US991', 'admin1', 'password123', '+621234567890', '123 Main St', 'admin');

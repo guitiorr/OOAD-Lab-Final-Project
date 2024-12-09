@@ -9,25 +9,26 @@ import view.LoginView;
 import view.BuyerView;
 import view.SellerView;
 import view.AdminView;
+import view.ItemView;
 
 public class Main extends Application {
+
+    private static VBox mainLayout;
 
     @Override
     public void start(Stage primaryStage) {
         primaryStage.setTitle("Main Application");
 
-        // Main layout (this will hold the active view)
-        VBox mainLayout = new VBox(10);
+        // Initial layout (Home page with login and register options)
+        mainLayout = new VBox(10);
 
-        // Home Page Layout
         Button loginButton = new Button("Login");
         Button registerButton = new Button("Register");
         mainLayout.getChildren().addAll(loginButton, registerButton);
 
-        // Initialize Login and Register Views
+        // Create Login and Register views
         LoginView loginView = new LoginView((username, role) -> {
-            // Clear mainLayout and load the appropriate role view
-            mainLayout.getChildren().clear();
+            mainLayout.getChildren().clear(); // Clear current layout
             switch (role) {
                 case "Buyer":
                     BuyerView buyerView = new BuyerView(username, role);
@@ -48,7 +49,7 @@ public class Main extends Application {
 
         RegisterView registerView = new RegisterView();
 
-        // Button Actions for Home Page
+        // Button actions
         loginButton.setOnAction(e -> {
             mainLayout.getChildren().clear();
             mainLayout.getChildren().add(loginView.getView());
@@ -59,9 +60,15 @@ public class Main extends Application {
             mainLayout.getChildren().add(registerView.getView());
         });
 
-        // Set the primary stage with a single Scene
+        // Set the initial layout on the stage
         primaryStage.setScene(new javafx.scene.Scene(mainLayout, 800, 600));
         primaryStage.show();
+    }
+
+    // Method to update the layout (no scenes)
+    public static void updateLayout(VBox newLayout) {
+        mainLayout.getChildren().clear(); // Clear current layout
+        mainLayout.getChildren().addAll(newLayout.getChildren()); // Add new layout content
     }
 
     public static void main(String[] args) {
