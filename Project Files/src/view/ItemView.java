@@ -9,6 +9,7 @@ import javafx.scene.layout.HBox;
 import main.Main;
 import models.Item;
 import connection.ItemDAO; // Import your ItemDAO class
+import controller.ItemController;
 
 public class ItemView {
     private VBox layout;
@@ -84,9 +85,9 @@ public class ItemView {
             actionColumn
         );
 
-        // Fetch the list of items from the ItemDAO
-        ItemDAO itemDAO = new ItemDAO();
-        ObservableList<Item> items = FXCollections.observableArrayList(itemDAO.getItems()); // Assuming getItems() returns a List<Item>
+//        ItemDAO itemDAO = new ItemDAO();
+        ItemController itemController = new ItemController();
+        ObservableList<Item> items = FXCollections.observableArrayList(itemController.getItems()); // Assuming getItems() returns a List<Item>
 
         tableView.setItems(items);
 
