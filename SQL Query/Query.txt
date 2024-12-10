@@ -1,5 +1,5 @@
 CREATE TABLE Users (
-    ID CHAR(36) NOT NULL PRIMARY KEY,
+    userId VARCHAR(255) NOT NULL PRIMARY KEY,
     username VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
     phoneNumber VARCHAR(20) NOT NULL,
@@ -18,6 +18,14 @@ CREATE TABLE Item (
     itemOfferStatus VARCHAR(50)
 );
 
+CREATE TABLE Transaction (
+    transactionId VARCHAR(255) PRIMARY KEY,
+    userId VARCHAR(255) NOT NULL,
+    itemId VARCHAR(255) NOT NULL,
+    FOREIGN KEY (userId) REFERENCES Users(userId),
+    FOREIGN KEY (itemId) REFERENCES Item(itemId)
+);
+
 
 INSERT INTO Item (itemId, itemName, itemSize, itemPrice, itemCategory, itemStatus, itemWishlist)
 VALUES ('IT001', 'Laptop', '15.6 inch', 899.99, 'Electronics', 'Available', FALSE);
@@ -31,24 +39,24 @@ INSERT INTO Item (itemId, itemName, itemSize, itemPrice, itemCategory, itemStatu
 VALUES ('IT005', 'Sneakers', '9', 79.99, 'Shoes', 'Available', FALSE);
 
 
-INSERT INTO Users (ID, username, password, phoneNumber, address, role)
+INSERT INTO Users (userId, username, password, phoneNumber, address, role)
 VALUES ('US991', 'admin1', 'password123', '+621234567890', '123 Main St', 'admin');
-INSERT INTO Users (ID, username, password, phoneNumber, address, role)
+INSERT INTO Users (userId, username, password, phoneNumber, address, role)
 VALUES ('US992', 'admin2', 'password456', '+629876543210', '456 Elm St', 'admin');
-INSERT INTO Users (ID, username, password, phoneNumber, address, role)
+INSERT INTO Users (userId, username, password, phoneNumber, address, role)
 VALUES ('US993', 'admin3', 'password789', '+620123456789', '789 Oak St', 'admin');
 
 
-INSERT INTO Users (ID, username, password, phoneNumber, address, role)
+INSERT INTO Users (userId, username, password, phoneNumber, address, role)
 VALUES ('US881', 'seller1', 'sellerpass123', '+621234567890', '123 Main St', 'seller');
-INSERT INTO Users (ID, username, password, phoneNumber, address, role)
+INSERT INTO Users (userId, username, password, phoneNumber, address, role)
 VALUES ('US882', 'seller2', 'sellerpass456', '+629876543210', '456 Elm St', 'seller');
-INSERT INTO Users (ID, username, password, phoneNumber, address, role)
+INSERT INTO Users (userId, username, password, phoneNumber, address, role)
 VALUES ('US883', 'seller3', 'sellerpass789', '+620123456789', '789 Oak St', 'seller');
 
-INSERT INTO Users (ID, username, password, phoneNumber, address, role)
+INSERT INTO Users (userId, username, password, phoneNumber, address, role)
 VALUES ('US771', 'buyer1', 'buyerpass123', '+621234567890', '123 Main St', 'buyer');
-INSERT INTO Users (ID, username, password, phoneNumber, address, role)
+INSERT INTO Users (userId, username, password, phoneNumber, address, role)
 VALUES ('US772', 'buyer2', 'buyerpass456', '+629876543210', '456 Elm St', 'buyer');
-INSERT INTO Users (ID, username, password, phoneNumber, address, role)
+INSERT INTO Users (userId, username, password, phoneNumber, address, role)
 VALUES ('US773', 'buyer3', 'buyerpass789', '+620123456789', '789 Oak St', 'buyer');

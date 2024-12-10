@@ -14,6 +14,7 @@ import view.ItemView;
 public class Main extends Application {
 
     private static VBox mainLayout;
+    private static String currentUsername; // Static variable to store the logged-in username
 
     @Override
     public void start(Stage primaryStage) {
@@ -28,6 +29,7 @@ public class Main extends Application {
 
         // Create Login and Register views
         LoginView loginView = new LoginView((username, role) -> {
+            currentUsername = username; // Store the username when the user logs in
             mainLayout.getChildren().clear(); // Clear current layout
             switch (role) {
                 case "Buyer":
@@ -71,7 +73,13 @@ public class Main extends Application {
         mainLayout.getChildren().addAll(newLayout.getChildren()); // Add new layout content
     }
 
+    // Getter for the current username
+    public static String getCurrentUsername() {
+        return currentUsername;
+    }
+
     public static void main(String[] args) {
         launch(args);
     }
 }
+

@@ -10,6 +10,25 @@ import java.sql.PreparedStatement;
 public class UserDAO {
 	private Connect connect = Connect.getInstance();
 	
+	public String getUserIdByUsername(String username) {
+	    // Updated query to use LOWER for case-insensitivity
+	    String query = "SELECT userId FROM Users WHERE LOWER(username) = LOWER(?)";
+	    try (
+	         PreparedStatement ps = connect.preparedStatement(query)) {
+	        ps.setString(1, username); // Bind the parameter
+	        ResultSet rs = ps.executeQuery();
+	        if (rs.next()) {
+	            return rs.getString("userId"); // Return the ID if found
+	        } else {
+	            System.out.println("No user found with username: " + username);
+	        }
+	    } catch (SQLException e) {
+	        e.printStackTrace(); // Print the stack trace for debugging
+	    }
+	    return null; // Return null if no user is found or an exception occurs
+	}
+
+	
     public void insertUser(User user) {
         String query = "INSERT INTO Users (id, username, phoneNumber, address, role, password) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = connect.preparedStatement(query)) {

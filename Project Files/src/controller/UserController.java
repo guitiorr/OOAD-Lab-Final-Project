@@ -14,6 +14,10 @@ public class UserController {
     public UserController() {
         this.userDAO = new UserDAO();
     }
+    
+    public String getUserIdByUsername(String username) {
+    	return userDAO.getUserIdByUsername(username);
+    }
 
     // Refresh Table (View All Users)
     public ArrayList<User> getAllUser() {

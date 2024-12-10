@@ -8,8 +8,9 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import main.Main;
 import models.Item;
-import connection.ItemDAO; // Import your ItemDAO class
 import controller.ItemController;
+import controller.TransactionController;
+import controller.UserController;
 
 public class ItemView {
     private VBox layout;
@@ -98,10 +99,36 @@ public class ItemView {
     // Action handlers for buttons
     private void handlePurchase(Item item) {
         if (item != null) {
-            System.out.println("Purchase item: " + item.getItemName());
-            // Add logic for purchasing the item
+            String username = Main.getCurrentUsername();
+            UserController uc = new UserController();
+            String userID = uc.getUserIdByUsername(username);
+            if (username == null || username.isEmpty()) {
+                System.out.println("No user is logged in. Cannot proceed with the purchase.");
+                return;
+            }
+
+            if ("Sold".equalsIgnoreCase(item.getItemStatus())) {
+                System.out.println("Item is already sold. Purchase cannot proceed.");
+                return;
+            }
+
+            // Assuming you have a controller instance
+            TransactionController tc = new TransactionController();
+
+//            System.out.println("ITEM ID -> " + item.getItemId());
+            
+            // Insert the transaction
+            tc.insertTransaction(userID, item.getItemId());
+
+            System.out.println("Successfully purchased item: " + item.getItemName());
+
+            // Update the item's status (mark it as sold, etc.)
+            item.setItemStatus("Sold");
+            tableView.refresh(); // Refresh the table view to reflect the status change
         }
     }
+
+
 
     private void handleMakeOffer(Item item) {
         if (item != null) {
