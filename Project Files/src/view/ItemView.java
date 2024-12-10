@@ -2,11 +2,10 @@ package view;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
-import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
 import main.Main;
 import models.Item;
 import connection.ItemDAO; // Import your ItemDAO class
@@ -15,7 +14,7 @@ public class ItemView {
     private VBox layout;
     private TableView<Item> tableView;
 
-    public ItemView(String username, String role) {  // Accept username and role as arguments
+    public ItemView(String username, String role) { // Accept username and role as arguments
         layout = new VBox(10);
         tableView = new TableView<>();
 
@@ -46,11 +45,33 @@ public class ItemView {
         TableColumn<Item, String> itemStatusColumn = new TableColumn<>("Item Status");
         itemStatusColumn.setCellValueFactory(new PropertyValueFactory<>("itemStatus"));
 
-        TableColumn<Item, String> itemWishlistColumn = new TableColumn<>("Wishlist");
-        itemWishlistColumn.setCellValueFactory(new PropertyValueFactory<>("itemWishlist"));
+        // Action column for buttons
+        TableColumn<Item, Void> actionColumn = new TableColumn<>("Actions");
+        actionColumn.setPrefWidth(300); // Set the preferred width for the column
+        actionColumn.setCellFactory(param -> new TableCell<>() {
+            private final HBox buttonBox = new HBox(5);
+            private final Button purchaseButton = new Button("Purchase");
+            private final Button offerButton = new Button("Make Offer");
+            private final Button wishlistButton = new Button("Add to Wishlist");
 
-        TableColumn<Item, String> itemOfferStatusColumn = new TableColumn<>("Offer Status");
-        itemOfferStatusColumn.setCellValueFactory(new PropertyValueFactory<>("itemOfferStatus"));
+            {
+                purchaseButton.setOnAction(e -> handlePurchase(getTableRow().getItem()));
+                offerButton.setOnAction(e -> handleMakeOffer(getTableRow().getItem()));
+                wishlistButton.setOnAction(e -> handleAddToWishlist(getTableRow().getItem()));
+
+                buttonBox.getChildren().addAll(purchaseButton, offerButton, wishlistButton);
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty || getTableRow().getItem() == null) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(buttonBox);
+                }
+            }
+        });
 
         // Add columns to the table
         tableView.getColumns().addAll(
@@ -60,8 +81,7 @@ public class ItemView {
             itemPriceColumn,
             itemCategoryColumn,
             itemStatusColumn,
-            itemWishlistColumn,
-            itemOfferStatusColumn
+            actionColumn
         );
 
         // Fetch the list of items from the ItemDAO
@@ -72,6 +92,28 @@ public class ItemView {
 
         // Add the return button first, then the table to the layout
         layout.getChildren().addAll(returnButton, tableView);
+    }
+
+    // Action handlers for buttons
+    private void handlePurchase(Item item) {
+        if (item != null) {
+            System.out.println("Purchase item: " + item.getItemName());
+            // Add logic for purchasing the item
+        }
+    }
+
+    private void handleMakeOffer(Item item) {
+        if (item != null) {
+            System.out.println("Make offer on item: " + item.getItemName());
+            // Add logic for making an offer on the item
+        }
+    }
+
+    private void handleAddToWishlist(Item item) {
+        if (item != null) {
+            System.out.println("Add item to wishlist: " + item.getItemName());
+            // Add logic for adding the item to the wishlist
+        }
     }
 
     public VBox getView() {
