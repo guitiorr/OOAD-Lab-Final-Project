@@ -121,6 +121,10 @@ public class ItemView {
             tc.insertTransaction(userID, item.getItemId());
 
             System.out.println("Successfully purchased item: " + item.getItemName());
+            
+            ItemController itc = new ItemController();
+            
+            itc.switchStatusToSold(item.getItemId());
 
             // Update the item's status (mark it as sold, etc.)
             item.setItemStatus("Sold");

@@ -19,5 +19,9 @@ public class ItemController {
 	public List<Item> getItems() {
        return itemDAO.getItems();
     }
+	
+	public void switchStatusToSold(String itemId) {
+		itemDAO.switchStatusToSold(itemId);
+	}
 
 }
