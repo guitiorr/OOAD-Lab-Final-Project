@@ -6,10 +6,13 @@ import javafx.scene.layout.VBox;
 
 import java.util.function.BiConsumer;
 
+import controller.UserController;
+
 public class LoginView {
     private GridPane layout;
 
     public LoginView(BiConsumer<String, String> onLoginSuccess) {
+    	UserController uc = new UserController();
         layout = new GridPane();
 
         Label usernameLabel = new Label("Username:");
@@ -31,7 +34,7 @@ public class LoginView {
 
             if (username.equals("admin") && password.equals("admin")) {
                 onLoginSuccess.accept(username, "Admin");
-            } else if (validateUser(username, password)) {
+            } else if (uc.validateCredentials(username, password)) {
                 String role = determineUserRole(username); // Example logic
                 onLoginSuccess.accept(username, role);
             } else {
