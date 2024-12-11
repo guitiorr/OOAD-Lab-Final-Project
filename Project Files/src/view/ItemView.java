@@ -11,6 +11,7 @@ import models.Item;
 import controller.ItemController;
 import controller.TransactionController;
 import controller.UserController;
+import controller.WishlistController;
 
 public class ItemView {
     private VBox layout;
@@ -143,9 +144,48 @@ public class ItemView {
 
     private void handleAddToWishlist(Item item) {
         if (item != null) {
-            System.out.println("Add item to wishlist: " + item.getItemName());
-            // Add logic for adding the item to the wishlist
+            // Retrieve the current logged-in user's username
+            String username = Main.getCurrentUsername();
+            if (username == null || username.isEmpty()) {
+                System.out.println("No user is logged in. Cannot add item to wishlist.");
+                return;
+            }
+
+            // Retrieve user ID from UserController
+            UserController userController = new UserController();
+            String userID = userController.getUserIdByUsername(username);
+
+            if (userID == null || userID.isEmpty()) {
+                System.out.println("Failed to retrieve user ID. Cannot add item to wishlist.");
+                return;
+            }
+
+            // Check if the item is already in the user's wishlist
+            WishlistController wishlistController = new WishlistController();
+            boolean alreadyWishlisted = wishlistController.isItemInWishlist(item.getItemId(), userID);
+
+            if (alreadyWishlisted) {
+                System.out.println("Item is already in your wishlist: " + item.getItemName());
+                return;
+            }
+
+            // Create a wishlist entry
+            String wishlistID = generateUniqueWishlistID(); // Implement a method to generate a unique ID for the wishlist entry
+
+            boolean success = wishlistController.addToWishlist(wishlistID, item.getItemId(), userID);
+            if (success) {
+                System.out.println("Item successfully added to wishlist: " + item.getItemName());
+            } else {
+                System.out.println("Failed to add item to wishlist: " + item.getItemName());
+            }
+        } else {
+            System.out.println("No item selected. Cannot add to wishlist.");
         }
+    }
+
+    private String generateUniqueWishlistID() {
+        // Example: Generate a unique wishlist ID using a timestamp or UUID
+        return "WL-" + System.currentTimeMillis();
     }
 
     public VBox getView() {

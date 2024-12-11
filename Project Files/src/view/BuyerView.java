@@ -17,12 +17,13 @@ public class BuyerView {
 
         // Buttons for buyer actions
         Button viewItemButton = new Button("View Item");
-        Button makeOffer = new Button("Make Offer");
+//        Button makeOffer = new Button("Make Offer");
         Button viewWishlist = new Button("View Wishlist");
         Button removeWishlistItem = new Button("Remove Item from Wishlist");
         Button viewHistory = new Button("View Purchase History");
 
-        layout.getChildren().addAll(loggedInAsLabel, roleLabel, viewItemButton, makeOffer, viewWishlist, removeWishlistItem, viewHistory);
+//        layout.getChildren().addAll(loggedInAsLabel, roleLabel, viewItemButton, makeOffer, viewWishlist, removeWishlistItem, viewHistory);
+        layout.getChildren().addAll(loggedInAsLabel, roleLabel, viewItemButton, viewWishlist, removeWishlistItem, viewHistory);
 
         // Add event handlers for buttons
         viewItemButton.setOnAction(e -> {
@@ -31,7 +32,7 @@ public class BuyerView {
             Main.updateLayout(itemView.getView());  // Switch to ItemView
         });
 
-        makeOffer.setOnAction(e -> System.out.println("Make Offer clicked"));
+//        makeOffer.setOnAction(e -> System.out.println("Make Offer clicked"));
         viewWishlist.setOnAction(e -> System.out.println("View Wishlist clicked"));
         removeWishlistItem.setOnAction(e -> System.out.println("Remove Item from Wishlist clicked"));
         viewHistory.setOnAction(e -> System.out.println("View Purchase History clicked"));

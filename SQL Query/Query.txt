@@ -26,6 +26,15 @@ CREATE TABLE Transaction (
     FOREIGN KEY (itemId) REFERENCES Item(itemId)
 );
 
+CREATE TABLE Wishlist (
+    wishlistID VARCHAR(255) PRIMARY KEY,
+    itemId VARCHAR(255) NOT NULL,
+    userId VARCHAR(255) NOT NULL,
+    FOREIGN KEY (itemId) REFERENCES Item(itemId) ON DELETE CASCADE ON UPDATE CASCADE,
+    FOREIGN KEY (userId) REFERENCES Users(userId) ON DELETE CASCADE ON UPDATE CASCADE
+);
+
+
 
 INSERT INTO Item (itemId, itemName, itemSize, itemPrice, itemCategory, itemStatus, itemWishlist)
 VALUES ('IT001', 'Laptop', '15.6 inch', 899.99, 'Electronics', 'Available', FALSE);
