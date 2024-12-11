@@ -1,7 +1,10 @@
 package view;
 
 import javafx.scene.control.Label;
+import javafx.scene.control.TableColumn;
+import javafx.scene.control.TableView;
 import javafx.scene.control.Button;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 
 public class SellerView {
@@ -14,35 +17,36 @@ public class SellerView {
         Label loggedInAsLabel = new Label("Logged in as: " + username);
         Label roleLabel = new Label("Role: " + role);
 
-        // Buttons for Seller Actions
+        // Navigation Buttons
         Button addItem = new Button("Add Item");
-        Button editItem = new Button("Edit Item");
-        Button deleteItem = new Button("Delete Item");
         Button viewOffers = new Button("View Offers");
-        Button acceptOffer = new Button("Accept Offer");
-        Button declineOffer = new Button("Decline Offer");
 
+        HBox navigation = new HBox(10, addItem, viewOffers);
+
+        // TableView to display items
+        TableView<String> itemsTable = new TableView<>();
+
+        TableColumn<String, String> itemNameColumn = new TableColumn<>("Item Name");
+        TableColumn<String, String> priceColumn = new TableColumn<>("Price");
+        TableColumn<String, String> actionsColumn = new TableColumn<>("Actions");
+
+        itemsTable.getColumns().addAll(itemNameColumn, priceColumn, actionsColumn);
+
+        // Add components to layout
         layout.getChildren().addAll(
             loggedInAsLabel,
             roleLabel,
-            addItem,
-            editItem,
-            deleteItem,
-            viewOffers,
-            acceptOffer,
-            declineOffer
+            navigation,
+            itemsTable
         );
 
         // Add event handlers for buttons
         addItem.setOnAction(e -> System.out.println("Add Item clicked"));
-        editItem.setOnAction(e -> System.out.println("Edit Item clicked"));
-        deleteItem.setOnAction(e -> System.out.println("Delete Item clicked"));
         viewOffers.setOnAction(e -> System.out.println("View Offers clicked"));
-        acceptOffer.setOnAction(e -> System.out.println("Accept Offer clicked"));
-        declineOffer.setOnAction(e -> System.out.println("Decline Offer clicked"));
     }
 
     public VBox getView() {
         return layout;
     }
 }
+
