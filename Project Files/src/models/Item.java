@@ -22,6 +22,16 @@ public class Item {
         this.itemWishlist = itemWishlist;
         this.itemOfferStatus = itemOfferStatus;
     }
+    
+    public Item(String itemId, String itemName, String itemSize, String itemPrice, String itemCategory, String itemStatus) {
+        this.itemId = itemId;
+        this.itemName = itemName;
+        this.itemSize = itemSize;
+        this.itemPrice = itemPrice;
+        this.itemCategory = itemCategory;
+        this.itemStatus = itemStatus;
+    }
+
 
     public String getItemId() {
         return itemId;

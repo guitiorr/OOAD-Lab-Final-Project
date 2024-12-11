@@ -3,9 +3,52 @@ package connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
+
+import models.Item;
 
 public class WishlistDAO {
 	private Connect connect = Connect.getInstance();
+	
+	public List<Item> getWishlistItemsByUserId(String userId) {
+	    List<Item> wishlistItems = new ArrayList<>();
+
+	    // Modify query to exclude 'itemWishlist' and 'itemOfferStatus'
+	    String query = "SELECT i.itemId, i.itemName, i.itemSize, i.itemPrice, i.itemCategory, " +
+	                   "i.itemStatus " +  // Removed 'itemWishlist' and 'itemOfferStatus' from select
+	                   "FROM wishlist w " +
+	                   "JOIN item i ON w.itemId = i.itemId " +
+	                   "WHERE w.userId = ?";
+
+	    try (
+	         PreparedStatement statement = connect.preparedStatement(query)) {
+
+	        statement.setString(1, userId);
+
+	        try (ResultSet resultSet = statement.executeQuery()) {
+	            while (resultSet.next()) {
+	                Item item = new Item(
+	                    resultSet.getString("itemId"),
+	                    resultSet.getString("itemName"),
+	                    resultSet.getString("itemSize"),
+	                    resultSet.getString("itemPrice"),
+	                    resultSet.getString("itemCategory"),
+	                    resultSet.getString("itemStatus")
+	                    // Removed 'itemWishlist' and 'itemOfferStatus' from constructor
+	                );
+	                wishlistItems.add(item);
+	            }
+	        }
+
+	    } catch (SQLException e) {
+	        System.err.println("Error retrieving wishlist items for user ID: " + userId);
+	        e.printStackTrace();
+	    }
+
+	    return wishlistItems;
+	}
+
 	
 	public boolean insertWishlist(String wishlistID, String itemID, String userID) {
         String query = "INSERT INTO Wishlist (wishlistID, itemId, userId) VALUES (?, ?, ?)";
