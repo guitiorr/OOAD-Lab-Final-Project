@@ -12,4 +12,8 @@ public class WishlistController {
 	public boolean isItemInWishlist(String itemId, String userId) {
 		return wishlistDAO.isItemInWishlist(itemId, userId);
 	}
+	
+	public boolean removeFromWishlist(String itemId, String userId) {
+		return wishlistDAO.removeFromWishlist(itemId, userId);
+	}
 }

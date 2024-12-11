@@ -60,7 +60,11 @@ public class ItemView {
             {
                 purchaseButton.setOnAction(e -> handlePurchase(getTableRow().getItem()));
                 offerButton.setOnAction(e -> handleMakeOffer(getTableRow().getItem()));
-                wishlistButton.setOnAction(e -> handleAddToWishlist(getTableRow().getItem()));
+
+                wishlistButton.setOnAction(e -> {
+                    Item item = getTableRow().getItem();
+                    handleAddToWishlist(item, wishlistButton);
+                });
 
                 buttonBox.getChildren().addAll(purchaseButton, offerButton, wishlistButton);
             }
@@ -71,10 +75,26 @@ public class ItemView {
                 if (empty || getTableRow().getItem() == null) {
                     setGraphic(null);
                 } else {
+                    Item currentItem = getTableRow().getItem();
+
+                    // Check wishlist status for current user and update button text
+                    String username = Main.getCurrentUsername();
+                    if (username != null && !username.isEmpty()) {
+                        UserController userController = new UserController();
+                        String userID = userController.getUserIdByUsername(username);
+
+                        if (userID != null && !userID.isEmpty()) {
+                            WishlistController wishlistController = new WishlistController();
+                            boolean alreadyWishlisted = wishlistController.isItemInWishlist(currentItem.getItemId(), userID);
+                            wishlistButton.setText(alreadyWishlisted ? "Remove from Wishlist" : "Add to Wishlist");
+                        }
+                    }
+
                     setGraphic(buttonBox);
                 }
             }
         });
+
 
         // Add columns to the table
         tableView.getColumns().addAll(
@@ -142,7 +162,7 @@ public class ItemView {
         }
     }
 
-    private void handleAddToWishlist(Item item) {
+    private void handleAddToWishlist(Item item, Button wishlistButton) {
         if (item != null) {
             // Retrieve the current logged-in user's username
             String username = Main.getCurrentUsername();
@@ -165,23 +185,30 @@ public class ItemView {
             boolean alreadyWishlisted = wishlistController.isItemInWishlist(item.getItemId(), userID);
 
             if (alreadyWishlisted) {
-                System.out.println("Item is already in your wishlist: " + item.getItemName());
-                return;
-            }
-
-            // Create a wishlist entry
-            String wishlistID = generateUniqueWishlistID(); // Implement a method to generate a unique ID for the wishlist entry
-
-            boolean success = wishlistController.addToWishlist(wishlistID, item.getItemId(), userID);
-            if (success) {
-                System.out.println("Item successfully added to wishlist: " + item.getItemName());
+                // Remove item from wishlist
+                boolean success = wishlistController.removeFromWishlist(item.getItemId(), userID); // Implement this method in WishlistController
+                if (success) {
+                    System.out.println("Item removed from wishlist: " + item.getItemName());
+                    wishlistButton.setText("Add to Wishlist");
+                } else {
+                    System.out.println("Failed to remove item from wishlist: " + item.getItemName());
+                }
             } else {
-                System.out.println("Failed to add item to wishlist: " + item.getItemName());
+                // Add item to wishlist
+                String wishlistID = generateUniqueWishlistID(); // Generate a unique ID for the wishlist entry
+                boolean success = wishlistController.addToWishlist(wishlistID, item.getItemId(), userID);
+                if (success) {
+                    System.out.println("Item successfully added to wishlist: " + item.getItemName());
+                    wishlistButton.setText("Remove from Wishlist");
+                } else {
+                    System.out.println("Failed to add item to wishlist: " + item.getItemName());
+                }
             }
         } else {
             System.out.println("No item selected. Cannot add to wishlist.");
         }
     }
+
 
     private String generateUniqueWishlistID() {
         // Example: Generate a unique wishlist ID using a timestamp or UUID

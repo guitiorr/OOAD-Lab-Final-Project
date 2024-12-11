@@ -36,6 +36,19 @@ public class WishlistDAO {
 	    }
 	    return false;
 	}
+	
+	public boolean removeFromWishlist(String itemId, String userId) {
+	    String query = "DELETE FROM wishlist WHERE itemId = ? AND userId = ?";
+	    try (PreparedStatement stmt = connect.preparedStatement(query)) {
+	        stmt.setString(1, itemId);
+	        stmt.setString(2, userId);
+	        return stmt.executeUpdate() > 0; // Return true if a row was deleted
+	    } catch (SQLException e) {
+	        e.printStackTrace();
+	    }
+	    return false;
+	}
+
 
 
 }
