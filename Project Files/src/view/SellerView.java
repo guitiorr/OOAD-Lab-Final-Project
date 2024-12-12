@@ -6,8 +6,8 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
-import javafx.scene.Scene;
 import javafx.stage.Stage;
+import main.Main;
 
 public class SellerView {
     private VBox layout;
@@ -42,14 +42,11 @@ public class SellerView {
             itemsTable
         );
 
-        // Add event handlers for buttons
+        // Event handlers
         addItem.setOnAction(e -> {
-            Stage addItemStage = new Stage();
+            // Navigate to AddItemView
             AddItemView addItemView = new AddItemView(username);
-            Scene scene = new Scene(addItemView.getView(), 400, 300);
-            addItemStage.setScene(scene);
-            addItemStage.setTitle("Add Item");
-            addItemStage.show();
+            Main.updateLayout(addItemView.getView()); // Replace current layout
         });
 
         viewOffers.setOnAction(e -> System.out.println("View Offers clicked"));
