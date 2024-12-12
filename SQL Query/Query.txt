@@ -34,6 +34,14 @@ CREATE TABLE Wishlist (
     FOREIGN KEY (userId) REFERENCES Users(userId) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
+CREATE TABLE SellerItems (
+    userId VARCHAR(255),
+    itemId VARCHAR(255),
+    PRIMARY KEY (userId, itemId),
+    FOREIGN KEY (userId) REFERENCES Users(userId) ON DELETE CASCADE,
+    FOREIGN KEY (itemId) REFERENCES Item(itemId) ON DELETE CASCADE
+);
+
 
 
 INSERT INTO Item (itemId, itemName, itemSize, itemPrice, itemCategory, itemStatus, itemWishlist)

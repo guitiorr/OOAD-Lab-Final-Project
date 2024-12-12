@@ -24,4 +24,23 @@ public class ItemController {
 		itemDAO.switchStatusToSold(itemId);
 	}
 
+	public boolean addItem(String itemName, String itemCategory, String itemSize, String itemPrice, String userId) {
+	    // Create a new Item object with the provided values
+	    Item newItem = new Item();
+	    newItem.setItemName(itemName);
+	    newItem.setItemCategory(itemCategory);
+	    newItem.setItemSize(itemSize);
+	    newItem.setItemPrice(itemPrice);
+	    newItem.setItemStatus("Pending"); // Default value
+	    newItem.setItemWishlist("0"); // Default value
+	    newItem.setItemOfferStatus(null); // Optional or default can be handled by the database
+
+	    // Add item to the database, passing userId as part of the method call
+	    return itemDAO.addItem(newItem, userId);
+	}
+	
+	public List<Item> getItemsBySeller(String userId){
+		return itemDAO.getItemsBySeller(userId);
+	}
+	
 }

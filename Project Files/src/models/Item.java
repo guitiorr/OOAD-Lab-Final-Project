@@ -23,6 +23,10 @@ public class Item {
         this.itemOfferStatus = itemOfferStatus;
     }
     
+    public Item() {
+    	
+    }
+    
     public Item(String itemId, String itemName, String itemSize, String itemPrice, String itemCategory, String itemStatus) {
         this.itemId = itemId;
         this.itemName = itemName;
