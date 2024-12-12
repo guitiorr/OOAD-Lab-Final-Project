@@ -126,33 +126,37 @@ public class ItemDAO {
 	}
 
 	// Method to get items owned by a specific seller
-    public List<Item> getItemsBySeller(String userId) {
-        List<Item> itemList = new ArrayList<>();
-        String query = "SELECT i.itemId, i.itemName, i.itemSize, i.itemPrice, i.itemCategory, i.itemStatus, i.itemWishlist, i.itemOfferStatus " +
+	public List<Item> getItemsBySeller(String userId) {
+        List<Item> items = new ArrayList<>();
+
+        String query = "SELECT i.itemId, i.itemName, i.itemPrice, i.itemStatus " +
                        "FROM Item i " +
                        "JOIN SellerItems si ON i.itemId = si.itemId " +
-                       "WHERE si.userId = ?";
+                       "JOIN Users u ON si.userId = u.userId " +
+                       "WHERE u.userId = ?";
 
-        try (PreparedStatement ps = connect.preparedStatement(query)) {
-            ps.setString(1, userId);
-            ResultSet rs = ps.executeQuery();
+        try (
+             PreparedStatement preparedStatement = connect.preparedStatement(query)) {
 
-            while (rs.next()) {
+            preparedStatement.setString(1, userId);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
                 Item item = new Item();
-                item.setItemId(rs.getString("itemId"));
-                item.setItemName(rs.getString("itemName"));
-                item.setItemSize(rs.getString("itemSize"));
-                item.setItemPrice(rs.getString("itemPrice"));
-                item.setItemCategory(rs.getString("itemCategory"));
-                item.setItemStatus(rs.getString("itemStatus"));
-                item.setItemWishlist(rs.getString("itemWishlist"));
-                item.setItemOfferStatus(rs.getString("itemOfferStatus"));
-                itemList.add(item);
+                item.setItemId(resultSet.getString("itemId"));
+                item.setItemName(resultSet.getString("itemName"));
+                item.setItemPrice(resultSet.getString("itemPrice"));
+                item.setItemStatus(resultSet.getString("itemStatus"));
+
+                items.add(item);
             }
+
         } catch (SQLException e) {
-            e.printStackTrace();
+            System.err.println("Error fetching items for seller: " + e.getMessage());
         }
-        return itemList;
+
+        return items;
     }
+
 
 }

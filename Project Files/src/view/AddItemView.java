@@ -37,13 +37,17 @@ public class AddItemView {
         // Submit Button
         Button submitButton = new Button("Add Item");
 
+        // Return Button
+        Button returnButton = new Button("Return");
+
         layout.getChildren().addAll(
             itemNameLabel, itemNameField,
             itemCategoryLabel, itemCategoryComboBox,
             itemSizeLabel, itemSizeField,
             itemPriceLabel, itemPriceField,
             validationMessage,
-            submitButton
+            submitButton,
+            returnButton
         );
 
         // Add event handler for submit button
@@ -58,17 +62,14 @@ public class AddItemView {
                 validationMessage.setText("Item name cannot be empty.");
                 return;
             }
-
             if (itemCategory == null) {
                 validationMessage.setText("Please select an item category.");
                 return;
             }
-
             if (itemSize.isEmpty()) {
                 validationMessage.setText("Item size cannot be empty.");
                 return;
             }
-
             if (itemPrice.isEmpty()) {
                 validationMessage.setText("Item price cannot be empty.");
                 return;
@@ -84,11 +85,10 @@ public class AddItemView {
 
             // Call ItemController
             String priceString = String.valueOf(price);
-            
-            UserController uc = new UserController();
-            
-            String userId = uc.getUserIdByUsername(username);
 
+            UserController uc = new UserController();
+
+            String userId = uc.getUserIdByUsername(username);
             ItemController itemController = new ItemController();
             boolean isAdded = itemController.addItem(itemName, itemCategory, itemSize, priceString, userId);
 
@@ -99,9 +99,13 @@ public class AddItemView {
                 validationMessage.setFill(Color.RED);
                 validationMessage.setText("Failed to add item. Please try again.");
             }
-
         });
 
+        // Add event handler for return button
+        returnButton.setOnAction(e -> {
+            SellerView sellerView = new SellerView(username, "Seller");
+            Main.updateLayout(sellerView.getView());
+        });
     }
 
     public VBox getView() {
