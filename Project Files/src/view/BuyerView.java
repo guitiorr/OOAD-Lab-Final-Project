@@ -39,7 +39,11 @@ public class BuyerView {
         });
 
 //        removeWishlistItem.setOnAction(e -> System.out.println("Remove Item from Wishlist clicked"));
-        viewHistory.setOnAction(e -> System.out.println("View Purchase History clicked"));
+        viewHistory.setOnAction(e -> {
+            // Navigate to TransactionView
+            TransactionView transactionView = new TransactionView(username);
+            Main.updateLayout(transactionView.getView());
+        });
     }
 
     public VBox getView() {

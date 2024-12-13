@@ -12,6 +12,10 @@ public class Transaction {
 		this.itemID = itemID;
 	}
 	
+	public Transaction() {
+		
+	}
+	
 	public void PurchaseItems(String userID, String itemID) {
 		
 	}
