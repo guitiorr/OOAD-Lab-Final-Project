@@ -13,7 +13,6 @@ import controller.UserController;
 
 public class LoginView {
     private GridPane layout;
-    private BorderPane layoutLuar;
 
     public LoginView(BiConsumer<String, String> onLoginSuccess) {
         UserController uc = new UserController();
@@ -25,7 +24,7 @@ public class LoginView {
         Label passwordLabel = new Label("Password:");
         PasswordField passwordField = new PasswordField();
         Button loginButton = new Button("Login");
-        VBox loginBox = new VBox(loginButton); // Membuat VBox untuk tombol
+        VBox loginBox = new VBox(loginButton);
         loginBox.setAlignment(Pos.CENTER);
         layout.add(usernameLabel, 0, 0);
         layout.add(usernameField, 0, 1);
@@ -33,34 +32,39 @@ public class LoginView {
         layout.add(passwordField, 0, 4);
         layout.add(loginBox, 0, 5);
         layout.setMargin(loginBox, new Insets(20, 0, 0, 0));
+
         // Login Logic
         loginButton.setOnAction(e -> {
             String username = usernameField.getText();
             String password = passwordField.getText();
 
-            if (username.equals("admin") && password.equals("admin")) {
-                onLoginSuccess.accept(username, "Admin");
-            } else if (uc.validateCredentials(username, password)) {
-                String role = determineUserRole(username); // Example logic
-                onLoginSuccess.accept(username, role);
+            if (uc.validateCredentials(username, password)) {
+            	String role = uc.getUserRole(username);
+            	System.out.println("Role retrieved: " + role);
+
+            	if (role == null) {
+            	    System.out.println("Role is null for username: " + username);
+            	} else if (role.equalsIgnoreCase("buyer")) {
+            	    onLoginSuccess.accept(username, role);
+            	} else {
+            	    System.out.println("Invalid role: " + role);
+            	}
+
             } else {
                 System.out.println("Invalid credentials.");
             }
         });
     }
 
-    private boolean validateUser(String username, String password) {
-        // Replace this with actual database check logic
-        return !username.isEmpty() && !password.isEmpty();
+    private String determineUserRole(String username, UserController uc) {
+        System.out.println("Determining role for: " + username);  // Debugging line
+        String role = uc.getUserRole(username); 
+        System.out.println("Role found: " + role);  // Debugging line
+        return role; 
     }
 
-    private String determineUserRole(String username) {
-        // Example: Retrieve role from database based on username
-        return username.startsWith("buyer") ? "Buyer" : "Seller";
-    }
 
     public GridPane getView() {
         return layout;
     }
-
 }

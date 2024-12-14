@@ -44,4 +44,8 @@ public class UserController {
     public boolean validateCredentials(String username, String password) {
         return userDAO.validateCredentials(username, password);
     }
+    
+    public String getUserRole(String username) {
+    	return userDAO.getUserRole(username);
+    }
 }
