@@ -12,6 +12,7 @@ public class ItemController {
 	
 	private ItemDAO itemDAO;
 	
+	
 	public ItemController() {
 		this.itemDAO = new ItemDAO();
 	}
@@ -41,6 +42,14 @@ public class ItemController {
 	
 	public List<Item> getItemsBySeller(String userId){
 		return itemDAO.getItemsBySeller(userId);
+	}
+	
+	public boolean updateItemStatus(String itemId, String newStatus) {
+		return itemDAO.updateItemStatus(itemId, newStatus);
+	}
+	
+	public List<Item> getItemsByStatus(String status){
+		return itemDAO.getItemsByStatus(status);
 	}
 	
 }

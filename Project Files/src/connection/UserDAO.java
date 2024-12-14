@@ -80,7 +80,7 @@ public class UserDAO {
 		
 		try {
 			while (connect.rs.next()) {
-				String ID = rs.getString("ID");
+				String ID = rs.getString("userId");
 				String username = rs.getString("username");
 				String password = rs.getString("password");
 				String phoneNumber = rs.getString("phoneNumber");
@@ -107,6 +107,21 @@ public class UserDAO {
             e.printStackTrace();
             return false;
         }
+    }
+	
+	public String getUserRole(String username) {
+        String query = "SELECT role FROM Users WHERE username = ?";
+        try (
+             PreparedStatement statement = connect.preparedStatement(query)) {
+            statement.setString(1, username);
+            ResultSet resultSet = statement.executeQuery();
+            if (resultSet.next()) {
+                return resultSet.getString("role");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return null; // Return null if role not found
     }
 
 }

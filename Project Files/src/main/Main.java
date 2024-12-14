@@ -33,21 +33,21 @@ public class Main extends Application {
         LoginView loginView = new LoginView((username, role) -> {
             currentUsername = username; // Store the username when the user logs in
             mainLayout.getChildren().clear(); // Clear current layout
-            switch (role) {
-                case "Buyer":
-                    BuyerView buyerView = new BuyerView(username, role);
-                    mainLayout.getChildren().add(buyerView.getView());
-                    break;
-                case "Seller":
-                    SellerView sellerView = new SellerView(username, role);
-                    mainLayout.getChildren().add(sellerView.getView());
-                    break;
-                case "Admin":
-                    AdminView adminView = new AdminView(username, role);
-                    mainLayout.getChildren().add(adminView.getView());
-                    break;
-                default:
-                    System.out.println("Invalid role");
+            switch (role.toLowerCase()) {
+	            case "buyer":
+	                BuyerView buyerView = new BuyerView(username, role);
+	                mainLayout.getChildren().add(buyerView.getView());
+	                break;
+	            case "seller":
+	                SellerView sellerView = new SellerView(username, role);
+	                mainLayout.getChildren().add(sellerView.getView());
+	                break;
+	            case "admin":
+	                AdminView adminView = new AdminView(username, role);
+	                mainLayout.getChildren().add(adminView.getView());
+	                break;
+	            default:
+	                System.out.println("Invalid role");
             }
         });
         mainLayout.setAlignment(Pos.CENTER);
@@ -84,5 +84,6 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
-    }
+    }
+
 }

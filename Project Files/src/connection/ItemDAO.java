@@ -12,6 +12,51 @@ import java.util.ArrayList;
 public class ItemDAO {
 	private Connect connect = Connect.getInstance();
 	
+	// Function to get items by status
+    public List<Item> getItemsByStatus(String status) {
+        List<Item> items = new ArrayList<>();
+        String query = "SELECT * FROM Item WHERE itemStatus = ?";
+
+        try (PreparedStatement preparedStatement = connect.preparedStatement(query)) {
+            preparedStatement.setString(1, status);
+            ResultSet resultSet = preparedStatement.executeQuery();
+
+            while (resultSet.next()) {
+                Item item = new Item();
+                item.setItemId(resultSet.getString("itemId"));
+                item.setItemName(resultSet.getString("itemName"));
+                item.setItemSize(resultSet.getString("itemSize"));
+                item.setItemPrice(resultSet.getString("itemPrice"));
+                item.setItemCategory(resultSet.getString("itemCategory"));
+                item.setItemStatus(resultSet.getString("itemStatus"));
+                item.setItemWishlist(resultSet.getString("itemWishlist"));
+                item.setItemOfferStatus(resultSet.getString("itemOfferStatus"));
+
+                items.add(item);
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return items;
+    }
+    
+ // Function to update item status
+    public boolean updateItemStatus(String itemId, String newStatus) {
+        String query = "UPDATE Item SET itemStatus = ? WHERE itemId = ?";
+
+        try (PreparedStatement preparedStatement = connect.preparedStatement(query)) {
+            preparedStatement.setString(1, newStatus);
+            preparedStatement.setString(2, itemId);
+
+            int rowsUpdated = preparedStatement.executeUpdate();
+            return rowsUpdated > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+	
 	public void switchStatusToSold(String itemId) {
         String query = "UPDATE item SET itemStatus = 'Sold' WHERE itemId = ?";
 
