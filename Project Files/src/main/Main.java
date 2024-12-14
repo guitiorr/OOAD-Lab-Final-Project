@@ -1,6 +1,7 @@
 package main;
 
 import javafx.application.Application;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
@@ -26,6 +27,7 @@ public class Main extends Application {
         Button loginButton = new Button("Login");
         Button registerButton = new Button("Register");
         mainLayout.getChildren().addAll(loginButton, registerButton);
+        mainLayout.setAlignment(Pos.CENTER);
 
         // Create Login and Register views
         LoginView loginView = new LoginView((username, role) -> {
@@ -48,6 +50,7 @@ public class Main extends Application {
                     System.out.println("Invalid role");
             }
         });
+        mainLayout.setAlignment(Pos.CENTER);
 
         RegisterView registerView = new RegisterView();
 
@@ -63,6 +66,7 @@ public class Main extends Application {
         });
 
         // Set the initial layout on the stage
+
         primaryStage.setScene(new javafx.scene.Scene(mainLayout, 800, 600));
         primaryStage.show();
     }
@@ -80,6 +84,5 @@ public class Main extends Application {
 
     public static void main(String[] args) {
         launch(args);
-    }
+    }
 }
-

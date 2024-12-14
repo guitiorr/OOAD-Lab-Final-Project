@@ -1,6 +1,9 @@
 package view;
 
+import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.VBox;
 
@@ -10,23 +13,26 @@ import controller.UserController;
 
 public class LoginView {
     private GridPane layout;
+    private BorderPane layoutLuar;
 
     public LoginView(BiConsumer<String, String> onLoginSuccess) {
-    	UserController uc = new UserController();
+        UserController uc = new UserController();
         layout = new GridPane();
 
+        layout.setAlignment(Pos.CENTER);
         Label usernameLabel = new Label("Username:");
         TextField usernameField = new TextField();
         Label passwordLabel = new Label("Password:");
         PasswordField passwordField = new PasswordField();
         Button loginButton = new Button("Login");
-
+        VBox loginBox = new VBox(loginButton); // Membuat VBox untuk tombol
+        loginBox.setAlignment(Pos.CENTER);
         layout.add(usernameLabel, 0, 0);
-        layout.add(usernameField, 1, 0);
-        layout.add(passwordLabel, 0, 1);
-        layout.add(passwordField, 1, 1);
-        layout.add(loginButton, 1, 2);
-
+        layout.add(usernameField, 0, 1);
+        layout.add(passwordLabel, 0, 3);
+        layout.add(passwordField, 0, 4);
+        layout.add(loginBox, 0, 5);
+        layout.setMargin(loginBox, new Insets(20, 0, 0, 0));
         // Login Logic
         loginButton.setOnAction(e -> {
             String username = usernameField.getText();
@@ -54,6 +60,6 @@ public class LoginView {
     }
 
     public GridPane getView() {
-        return layout;
-    }
+        return layout;
+    }
 }
