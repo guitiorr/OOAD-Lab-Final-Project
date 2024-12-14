@@ -3,6 +3,7 @@ package view;
 import javafx.scene.control.Label;
 import javafx.scene.control.Button;
 import javafx.scene.layout.VBox;
+import main.Main;
 
 public class AdminView {
     private VBox layout;
@@ -28,7 +29,10 @@ public class AdminView {
         );
 
         // Add event handlers for buttons
-        viewRequests.setOnAction(e -> System.out.println("View Requested Items clicked"));
+        viewRequests.setOnAction(e -> {
+            RequestItemView requestItemView = new RequestItemView(username, role);
+            Main.updateLayout(requestItemView.getView());
+        });
         approveItem.setOnAction(e -> System.out.println("Approve Item clicked"));
         declineItem.setOnAction(e -> System.out.println("Decline Item clicked"));
     }
@@ -37,3 +41,4 @@ public class AdminView {
         return layout;
     }
 }
+
