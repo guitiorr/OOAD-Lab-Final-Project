@@ -60,6 +60,7 @@ public class LoginView {
     }
 
     public GridPane getView() {
-        return layout;
-    }
+        return layout;
+    }
+
 }
