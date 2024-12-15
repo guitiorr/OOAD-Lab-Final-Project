@@ -42,6 +42,18 @@ CREATE TABLE SellerItems (
     FOREIGN KEY (itemId) REFERENCES Item(itemId) ON DELETE CASCADE
 );
 
+CREATE TABLE Offers (
+    offerId INT AUTO_INCREMENT PRIMARY KEY,
+    itemId VARCHAR(255) NOT NULL,
+    userId VARCHAR(255) NOT NULL,
+    offerPrice DOUBLE NOT NULL,
+    status VARCHAR(10) DEFAULT 'Pending',
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (itemId) REFERENCES Item(itemId) ON DELETE CASCADE,
+    FOREIGN KEY (userId) REFERENCES Users(userId) ON DELETE CASCADE
+);
+
+
 
 
 INSERT INTO Item (itemId, itemName, itemSize, itemPrice, itemCategory, itemStatus, itemWishlist)
