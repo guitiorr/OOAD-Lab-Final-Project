@@ -110,7 +110,7 @@ public class ItemView {
 
 //        ItemDAO itemDAO = new ItemDAO();
         ItemController itemController = new ItemController();
-        ObservableList<Item> items = FXCollections.observableArrayList(itemController.getItems()); // Assuming getItems() returns a List<Item>
+        ObservableList<Item> items = FXCollections.observableArrayList(itemController.getAvailableItems()); // Assuming getItems() returns a List<Item>
 
         tableView.setItems(items);
 

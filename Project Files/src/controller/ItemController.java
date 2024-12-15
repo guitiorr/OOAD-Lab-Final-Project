@@ -21,6 +21,10 @@ public class ItemController {
        return itemDAO.getItems();
     }
 	
+	public List<Item> getAvailableItems(){
+		return itemDAO.getAvailableItems();
+	}
+	
 	public void switchStatusToSold(String itemId) {
 		itemDAO.switchStatusToSold(itemId);
 	}
