@@ -106,7 +106,7 @@ public class ItemDAO {
 	
 	public List<Item> getAvailableItems() {
         List<Item> items = new ArrayList<>();
-        String query = "SELECT * FROM item WHERE status = 'Available"; // Adjust your query based on your table structure
+        String query = "SELECT * FROM item WHERE itemStatus = 'Available'"; // Adjust your query based on your table structure
 
         try (
              ResultSet rs = connect.execQuery(query)) {
