@@ -1,6 +1,9 @@
 package controller;
 
+import java.util.List;
+
 import connection.OfferDAO;
+import models.Offer;
 
 public class OfferController {
 	OfferDAO offerDAO = new OfferDAO();
@@ -13,7 +16,12 @@ public class OfferController {
 		 return offerDAO.hasExistingOffer(itemId, userId);
 	 }
 	 
-	 
+	 public List<Offer> getOffersBySellerId(String sellerId){
+		 return offerDAO.getOffersBySellerId(sellerId);
+	 }
 	
+	 public boolean updateOfferStatus(int offerId, String newStatus) {
+		 return offerDAO.updateOfferStatus(offerId, newStatus);
+	 }
 	
 }

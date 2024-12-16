@@ -56,4 +56,8 @@ public class ItemController {
 		return itemDAO.getItemsByStatus(status);
 	}
 	
+	public boolean updateItemPrice(String itemId, double newPrice) {
+		return itemDAO.updateItemPrice(itemId, newPrice);
+	}
+	
 }

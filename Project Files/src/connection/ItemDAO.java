@@ -231,6 +231,25 @@ public class ItemDAO {
 
         return items;
     }
+	
+	public boolean updateItemPrice(String itemId, double newPrice) {
+        String query = "UPDATE Item SET itemPrice = ? WHERE itemId = ?";
+
+        try (
+             PreparedStatement statement = connect.preparedStatement(query)) {
+
+            statement.setDouble(1, newPrice);
+            statement.setString(2, itemId);
+
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
+    }
 
 
 }

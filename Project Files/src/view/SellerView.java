@@ -46,8 +46,8 @@ public class SellerView {
         });
 
         viewOffers.setOnAction(e -> {
-            // Placeholder action for "View Offers"
-            System.out.println("View Offers clicked");
+        	OffersView offersView = new OffersView(username, role);
+            Main.updateLayout(offersView.getView());
         });
 
         // Add elements to the layout
