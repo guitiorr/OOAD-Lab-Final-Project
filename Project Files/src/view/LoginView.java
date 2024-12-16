@@ -44,9 +44,17 @@ public class LoginView {
 
             	if (role == null) {
             	    System.out.println("Role is null for username: " + username);
-            	} else if (role.equalsIgnoreCase("buyer")) {
+            	} 
+            	else if (role.equalsIgnoreCase("buyer")) {
             	    onLoginSuccess.accept(username, role);
-            	} else {
+            	} 
+            	else if (role.equalsIgnoreCase("seller")) {
+            		onLoginSuccess.accept(username, role);
+            	}
+            	else if (role.equalsIgnoreCase("admin")) {
+            	    onLoginSuccess.accept(username, role);
+            	} 
+            	else {
             	    System.out.println("Invalid role: " + role);
             	}
 

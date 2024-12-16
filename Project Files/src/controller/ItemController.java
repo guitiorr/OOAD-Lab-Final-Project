@@ -21,6 +21,10 @@ public class ItemController {
        return itemDAO.getItems();
     }
 	
+	public List<Item> getAvailableItems(){
+		return itemDAO.getAvailableItems();
+	}
+	
 	public void switchStatusToSold(String itemId) {
 		itemDAO.switchStatusToSold(itemId);
 	}
@@ -50,6 +54,10 @@ public class ItemController {
 	
 	public List<Item> getItemsByStatus(String status){
 		return itemDAO.getItemsByStatus(status);
+	}
+	
+	public boolean updateItemPrice(String itemId, double newPrice) {
+		return itemDAO.updateItemPrice(itemId, newPrice);
 	}
 	
 }

@@ -104,6 +104,35 @@ public class ItemDAO {
         return items;
     }
 	
+	public List<Item> getAvailableItems() {
+        List<Item> items = new ArrayList<>();
+        String query = "SELECT * FROM item WHERE itemStatus = 'Available'"; // Adjust your query based on your table structure
+
+        try (
+             ResultSet rs = connect.execQuery(query)) {
+            
+            while (rs.next()) {
+                // Assuming your Item class has a constructor that matches the columns
+                Item item = new Item(
+                    rs.getString("itemId"),
+                    rs.getString("itemName"),
+                    rs.getString("itemSize"),
+                    rs.getString("itemPrice"),
+                    rs.getString("itemCategory"),
+                    rs.getString("itemStatus"),
+                    rs.getString("itemWishlist"),
+                    rs.getString("itemOfferStatus")
+                );
+                items.add(item);
+            }
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return items;
+    }
+	
 	public boolean addItem(Item item, String userId) {
 	    // Generate unique itemId starting with "IT"
 	    String itemId = "IT" + UUID.randomUUID().toString().substring(0, 8);
@@ -201,6 +230,25 @@ public class ItemDAO {
         }
 
         return items;
+    }
+	
+	public boolean updateItemPrice(String itemId, double newPrice) {
+        String query = "UPDATE Item SET itemPrice = ? WHERE itemId = ?";
+
+        try (
+             PreparedStatement statement = connect.preparedStatement(query)) {
+
+            statement.setDouble(1, newPrice);
+            statement.setString(2, itemId);
+
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false;
     }
 
 

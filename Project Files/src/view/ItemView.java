@@ -9,6 +9,7 @@ import javafx.scene.layout.HBox;
 import main.Main;
 import models.Item;
 import controller.ItemController;
+import controller.OfferController;
 import controller.TransactionController;
 import controller.UserController;
 import controller.WishlistController;
@@ -109,7 +110,7 @@ public class ItemView {
 
 //        ItemDAO itemDAO = new ItemDAO();
         ItemController itemController = new ItemController();
-        ObservableList<Item> items = FXCollections.observableArrayList(itemController.getItems()); // Assuming getItems() returns a List<Item>
+        ObservableList<Item> items = FXCollections.observableArrayList(itemController.getAvailableItems()); // Assuming getItems() returns a List<Item>
 
         tableView.setItems(items);
 
@@ -157,10 +158,57 @@ public class ItemView {
 
     private void handleMakeOffer(Item item) {
         if (item != null) {
-            System.out.println("Make offer on item: " + item.getItemName());
-            // Add logic for making an offer on the item
+            // Prompt user for offer price
+            TextInputDialog dialog = new TextInputDialog();
+            dialog.setTitle("Make Offer");
+            dialog.setHeaderText("Make an Offer for: " + item.getItemName());
+            dialog.setContentText("Enter your offer price:");
+
+            dialog.showAndWait().ifPresent(input -> {
+                try {
+                    double offerPrice = Double.parseDouble(input);
+
+                    // Get logged-in user's username
+                    String username = Main.getCurrentUsername();
+                    if (username == null || username.isEmpty()) {
+                        System.out.println("No user is logged in. Cannot make an offer.");
+                        return;
+                    }
+
+                    // Get userId from UserController
+                    UserController userController = new UserController();
+                    String userId = userController.getUserIdByUsername(username);
+
+                    if (userId == null || userId.isEmpty()) {
+                        System.out.println("Failed to retrieve user ID.");
+                        return;
+                    }
+
+                    // Validate if the user has already made an offer for this item
+                    OfferController offerController = new OfferController();
+                    if (offerController.hasExistingOffer(item.getItemId(), userId)) {
+                        System.out.println("You have already made an offer for this item.");
+                        return;
+                    }
+
+                    // Add offer to the database
+                    boolean success = offerController.addOffer(item.getItemId(), userId, offerPrice);
+                    if (success) {
+                        System.out.println("Offer made successfully: " + offerPrice);
+                    } else {
+                        System.out.println("Failed to make the offer.");
+                    }
+
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid offer price entered.");
+                }
+            });
+        } else {
+            System.out.println("No item selected. Cannot make an offer.");
         }
     }
+
+
 
     private void handleAddToWishlist(Item item, Button wishlistButton) {
         if (item != null) {

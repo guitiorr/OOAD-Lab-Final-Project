@@ -101,8 +101,8 @@ public class RequestItemView {
     private void handleApprove(Item item) {
         if (item != null) {
             ItemController itemController = new ItemController();
-            itemController.updateItemStatus(item.getItemId(), "Approved"); // Update item status to "Approved"
-            item.setItemStatus("Approved");
+            itemController.updateItemStatus(item.getItemId(), "Available"); // Update item status to "Approved"
+            item.setItemStatus("Available");
             tableView.refresh(); // Refresh the table view to reflect the status change
             System.out.println("Item approved: " + item.getItemName());
         }
