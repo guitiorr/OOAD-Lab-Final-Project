@@ -1,6 +1,7 @@
 package view;
 
 import javafx.scene.layout.VBox;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import main.Main;
@@ -25,7 +26,7 @@ public class BuyerView {
 
 //        layout.getChildren().addAll(loggedInAsLabel, roleLabel, viewItemButton, viewWishlist, removeWishlistItem, viewHistory);
         layout.getChildren().addAll(loggedInAsLabel, roleLabel, viewItemButton, viewWishlist, viewHistory,logout);
-
+        layout.setAlignment(Pos.CENTER);
 
         // Add event handlers for buttons
         logout.setOnAction(e -> {

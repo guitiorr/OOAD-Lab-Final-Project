@@ -7,6 +7,7 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import controller.ItemController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
@@ -66,6 +67,8 @@ public class SellerView {
 
         // Add elements to the layout
         layout.getChildren().addAll(loggedInAsLabel, roleLabel, navigation,logout);
+        navigation.setAlignment(Pos.CENTER);
+        layout.setAlignment(Pos.CENTER);
     }
 
     public VBox getView() {

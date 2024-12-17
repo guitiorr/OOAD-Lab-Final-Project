@@ -4,7 +4,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import models.Offer;
 
@@ -49,16 +51,46 @@ public class OfferDAO {
         return false;
     }
     
-    public List<Offer> getOffersBySellerId(String sellerId) {
-        List<Offer> offers = new ArrayList<>();
-        String query = "SELECT o.offerId, o.itemId, o.userId, o.offerPrice, o.status, o.created_at " +
+//    public List<Offer> getOffersBySellerId(String sellerId) {
+//        List<Offer> offers = new ArrayList<>();
+//        String query = "SELECT o.offerId, o.itemId, i.itemName, o.userId, o.offerPrice, o.status, o.created_at " +
+//                "FROM Offers o " +
+//                "JOIN SellerItems si ON o.itemId = si.itemId " +
+//                "JOIN Item i ON o.itemId = i.itemId " + 
+//                "WHERE si.userId = ?";
+//
+//        try (
+//             PreparedStatement statement = connect.preparedStatement(query)) {
+//
+//            statement.setString(1, sellerId);
+//            ResultSet resultSet = statement.executeQuery();
+//
+//            while (resultSet.next()) {
+//                Offer offer = new Offer();
+//                offer.setOfferId(resultSet.getInt("offerId"));
+//                offer.setItemId(resultSet.getString("itemId"));
+//                offer.setUserId(resultSet.getString("userId"));
+//                offer.setOfferPrice(resultSet.getDouble("offerPrice"));
+//                offer.setStatus(resultSet.getString("status"));
+//                offer.setCreated_at(resultSet.getString("created_at"));
+//                offers.add(offer);
+//            }
+//
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//
+//        return offers;
+//    }
+    public List<Map<String, Object>> getOffersBySellerId(String sellerId) {
+        List<Map<String, Object>> offersWithItemName = new ArrayList<>();
+        String query = "SELECT o.offerId, o.itemId, i.itemName, o.userId, o.offerPrice, o.status, o.created_at " +
                        "FROM Offers o " +
                        "JOIN SellerItems si ON o.itemId = si.itemId " +
+                       "JOIN Item i ON o.itemId = i.itemId " + 
                        "WHERE si.userId = ?";
 
-        try (
-             PreparedStatement statement = connect.preparedStatement(query)) {
-
+        try (PreparedStatement statement = connect.preparedStatement(query)) {
             statement.setString(1, sellerId);
             ResultSet resultSet = statement.executeQuery();
 
@@ -70,14 +102,20 @@ public class OfferDAO {
                 offer.setOfferPrice(resultSet.getDouble("offerPrice"));
                 offer.setStatus(resultSet.getString("status"));
                 offer.setCreated_at(resultSet.getString("created_at"));
-                offers.add(offer);
+
+                // Map untuk menyimpan itemName bersama Offer
+                Map<String, Object> offerWithItemName = new HashMap<>();
+                offerWithItemName.put("offer", offer);
+                offerWithItemName.put("itemName", resultSet.getString("itemName"));
+
+                offersWithItemName.add(offerWithItemName);
             }
 
         } catch (SQLException e) {
             e.printStackTrace();
         }
 
-        return offers;
+        return offersWithItemName;
     }
     
     /**

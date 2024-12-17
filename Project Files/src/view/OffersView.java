@@ -1,9 +1,12 @@
 package view;
 
+import java.util.Map;
+
 import controller.ItemController;
 import controller.OfferController;
 import controller.TransactionController;
 import controller.UserController;
+import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.scene.control.Button;
@@ -16,135 +19,142 @@ import javafx.scene.layout.HBox;
 import main.Main;
 import models.Offer;
 
-public class OffersView {
-    private VBox layout;
-    private TableView<Offer> tableView;
 
-    public OffersView(String username, String role) {
-        layout = new VBox(10);
-        tableView = new TableView<>();
+    public class OffersView {
+        private VBox layout;
+        private TableView<Map<String, Object>> tableView;
 
-        // Create "Return" button
-        Button returnButton = new Button("Return");
-        returnButton.setOnAction(e -> {
-            // Return to seller's main view (placeholder implementation)
-            SellerView sellerMainView = new SellerView(username, role);
-            Main.updateLayout(sellerMainView.getView());
-        });
+        public OffersView(String username, String role) {
+            layout = new VBox(10);
+            tableView = new TableView<>();
 
-        // Define table columns
-        TableColumn<Offer, String> offerIdColumn = new TableColumn<>("Offer ID");
-        offerIdColumn.setCellValueFactory(new PropertyValueFactory<>("offerId"));
+            // Create "Return" button
+            Button returnButton = new Button("Return");
+            returnButton.setOnAction(e -> {
+                // Return to seller's main view (placeholder implementation)
+                SellerView sellerMainView = new SellerView(username, role);
+                Main.updateLayout(sellerMainView.getView());
+            });
 
-        TableColumn<Offer, String> itemIdColumn = new TableColumn<>("Item ID");
-        itemIdColumn.setCellValueFactory(new PropertyValueFactory<>("itemId"));
+            // Define table columns
+            TableColumn<Map<String, Object>, String> offerIdColumn = new TableColumn<>("Offer ID");
+            offerIdColumn.setCellValueFactory(cellData -> 
+                new SimpleStringProperty(String.valueOf(((Offer) cellData.getValue().get("offer")).getOfferId()))
+            );
 
-        TableColumn<Offer, String> offerPriceColumn = new TableColumn<>("Offer Price");
-        offerPriceColumn.setCellValueFactory(new PropertyValueFactory<>("offerPrice"));
+            TableColumn<Map<String, Object>, String> itemIdColumn = new TableColumn<>("Item ID");
+            itemIdColumn.setCellValueFactory(cellData -> 
+                new SimpleStringProperty(((Offer) cellData.getValue().get("offer")).getItemId())
+            );
 
-        TableColumn<Offer, String> buyerIdColumn = new TableColumn<>("Buyer ID");
-        buyerIdColumn.setCellValueFactory(new PropertyValueFactory<>("userId"));
+            TableColumn<Map<String, Object>, String> itemNameColumn = new TableColumn<>("Item Name");
+            itemNameColumn.setCellValueFactory(cellData -> 
+                new SimpleStringProperty((String) cellData.getValue().get("itemName"))
+            );
 
-        TableColumn<Offer, String> statusColumn = new TableColumn<>("Status");
-        statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-        TableColumn<Offer, Void> actionColumn = new TableColumn<>("Actions");
-        actionColumn.setCellFactory(param -> new TableCell<>() {
-            private final HBox buttonBox = new HBox(10);
-            private final Button acceptButton = new Button("Accept");
-            private final Button rejectButton = new Button("Reject");
+            TableColumn<Map<String, Object>, String> offerPriceColumn = new TableColumn<>("Offer Price");
+            offerPriceColumn.setCellValueFactory(cellData -> 
+                new SimpleStringProperty(String.valueOf(((Offer) cellData.getValue().get("offer")).getOfferPrice()))
+            );
 
-            {
-                acceptButton.setOnAction(e -> handleAccept(getTableRow().getItem()));
-                rejectButton.setOnAction(e -> handleReject(getTableRow().getItem()));
-                buttonBox.getChildren().addAll(acceptButton, rejectButton);
-            }
+            TableColumn<Map<String, Object>, String> buyerIdColumn = new TableColumn<>("Buyer ID");
+            buyerIdColumn.setCellValueFactory(cellData -> 
+                new SimpleStringProperty(((Offer) cellData.getValue().get("offer")).getUserId())
+            );
 
-            @Override
-            protected void updateItem(Void item, boolean empty) {
-//                super.updateItem(item, empty);
-//                if (empty || getTableRow().getItem() == null) {
-//                    setGraphic(null);
-//                } else {
-//                    Offer currentOffer = getTableRow().getItem();
-//                    if ("Pending".equalsIgnoreCase(currentOffer.getStatus())) {
-//                        setGraphic(buttonBox);
-//                    } else {
-//                        setGraphic(null);
-//                    }
-//                }
-                super.updateItem(item, empty);
-                if (empty || getTableRow() == null || getTableRow().getItem() == null) {
-                    setGraphic(null);
-                } else {
-                    Offer currentOffer = getTableRow().getItem();
-                    if ("Pending".equalsIgnoreCase(currentOffer.getStatus())) {
-                        setGraphic(buttonBox);
-                    } else {
+            TableColumn<Map<String, Object>, String> statusColumn = new TableColumn<>("Status");
+            statusColumn.setCellValueFactory(cellData -> 
+                new SimpleStringProperty(((Offer) cellData.getValue().get("offer")).getStatus())
+            );
+
+            // Actions Column
+            TableColumn<Map<String, Object>, Void> actionColumn = new TableColumn<>("Actions");
+            actionColumn.setCellFactory(param -> new TableCell<>() {
+                private final HBox buttonBox = new HBox(10);
+                private final Button acceptButton = new Button("Accept");
+                private final Button rejectButton = new Button("Reject");
+
+                {
+                    acceptButton.setOnAction(e -> handleAccept(getTableRow().getItem()));
+                    rejectButton.setOnAction(e -> handleReject(getTableRow().getItem()));
+                    buttonBox.getChildren().addAll(acceptButton, rejectButton);
+                }
+
+                @Override
+                protected void updateItem(Void item, boolean empty) {
+                    super.updateItem(item, empty);
+                    if (empty || getTableRow() == null || getTableRow().getItem() == null) {
                         setGraphic(null);
+                    } else {
+                        Map<String, Object> rowData = getTableRow().getItem();
+                        Offer currentOffer = (Offer) rowData.get("offer");
+                        if ("Pending".equalsIgnoreCase(currentOffer.getStatus())) {
+                            setGraphic(buttonBox);
+                        } else {
+                            setGraphic(null);
+                        }
                     }
                 }
+            });
+
+            // Add columns to the table
+            tableView.getColumns().addAll(
+                offerIdColumn,
+                itemIdColumn,
+                itemNameColumn,
+                offerPriceColumn,
+                buyerIdColumn,
+                statusColumn,
+                actionColumn
+            );
+
+            UserController uc = new UserController();
+            String sellerId = uc.getUserIdByUsername(username);
+
+            // Load offers for the seller's items
+            OfferController offerController = new OfferController();
+            ObservableList<Map<String, Object>> offers = FXCollections.observableArrayList(offerController.getOffersBySellerId(sellerId));
+
+            tableView.setItems(offers);
+
+            // Add components to layout
+            layout.getChildren().addAll(returnButton, tableView);
+        }
+
+        private void handleAccept(Map<String, Object> rowData) {
+            Offer offer = (Offer) rowData.get("offer");
+            if (offer != null) {
+                UserController uc = new UserController();
+                TransactionController tc = new TransactionController();
+                OfferController offerController = new OfferController();
+                ItemController ic = new ItemController();
+                offerController.updateOfferStatus(offer.getOfferId(), "Accepted"); // Update status to "Accepted"
+                offer.setStatus("Accepted");
+                String userId = offer.getUserId();
+                String itemId = offer.getItemId();
+                double updatedPrice = offer.getOfferPrice();
+                
+                ic.updateItemPrice(itemId, updatedPrice);
+                ic.switchStatusToSold(itemId);
+                
+                tc.insertTransaction(userId, itemId);
+                tableView.refresh(); // Refresh the table view
+                System.out.println("Offer accepted: " + offer.getOfferId());
             }
-        });
+        }
 
+        private void handleReject(Map<String, Object> rowData) {
+            Offer offer = (Offer) rowData.get("offer");
+            if (offer != null) {
+                OfferController offerController = new OfferController();
+                offerController.updateOfferStatus(offer.getOfferId(), "Rejected"); // Update status to "Rejected"
+                offer.setStatus("Rejected");
+                tableView.refresh(); // Refresh the table view
+                System.out.println("Offer rejected: " + offer.getOfferId());
+            }
+        }
 
-        // Add columns to the table
-        tableView.getColumns().addAll(
-            offerIdColumn,
-            itemIdColumn,
-            offerPriceColumn,
-            buyerIdColumn,
-            statusColumn,
-            actionColumn
-        );
-
-        UserController uc = new UserController();
-        
-        String sellerId = uc.getUserIdByUsername(username);
-
-        // Load offers for the seller's items
-        OfferController offerController = new OfferController();
-        ObservableList<Offer> offers = FXCollections.observableArrayList(
-            offerController.getOffersBySellerId(sellerId) // Fetch offers for items owned by the seller
-        );
-        tableView.setItems(offers);
-
-        // Add components to layout
-        layout.getChildren().addAll(returnButton, tableView);
-
-    }
-
-    private void handleAccept(Offer offer) {
-        if (offer != null) {
-        	UserController uc = new UserController();
-        	TransactionController tc = new TransactionController();
-            OfferController offerController = new OfferController();
-            ItemController ic = new ItemController();
-            offerController.updateOfferStatus(offer.getOfferId(), "Accepted"); // Update status to "Accepted"
-            offer.setStatus("Accepted");
-            String userId = offer.getUserId();
-            String itemId = offer.getItemId();
-            double updatedPrice = offer.getOfferPrice();
-            
-            ic.updateItemPrice(itemId, updatedPrice);
-            ic.switchStatusToSold(itemId);
-            
-            tc.insertTransaction(userId, itemId);
-            tableView.refresh(); // Refresh the table view
-            System.out.println("Offer accepted: " + offer.getOfferId());
+        public VBox getView() {
+            return layout;
         }
     }
-
-    private void handleReject(Offer offer) {
-        if (offer != null) {
-            OfferController offerController = new OfferController();
-            offerController.updateOfferStatus(offer.getOfferId(), "Rejected"); // Update status to "Rejected"
-            offer.setStatus("Rejected");
-            tableView.refresh(); // Refresh the table view
-            System.out.println("Offer rejected: " + offer.getOfferId());
-        }
-    }
-
-    public VBox getView() {
-        return layout;
-    }
-}

@@ -1,6 +1,7 @@
 package controller;
 
 import java.util.List;
+import java.util.Map;
 
 import connection.OfferDAO;
 import models.Offer;
@@ -16,7 +17,10 @@ public class OfferController {
 		 return offerDAO.hasExistingOffer(itemId, userId);
 	 }
 	 
-	 public List<Offer> getOffersBySellerId(String sellerId){
+//	 public List<Offer> getOffersBySellerId(String sellerId){
+//		 return offerDAO.getOffersBySellerId(sellerId);
+//	 }
+	 public List<Map<String, Object>> getOffersBySellerId(String sellerId){
 		 return offerDAO.getOffersBySellerId(sellerId);
 	 }
 	
