@@ -8,6 +8,7 @@ import javafx.scene.layout.VBox;
 import javafx.scene.layout.HBox;
 import main.Main;
 import models.Item;
+import models.Offer;
 import controller.ItemController;
 import controller.OfferController;
 import controller.TransactionController;
@@ -187,8 +188,29 @@ public class ItemView {
                     // Validate if the user has already made an offer for this item
                     OfferController offerController = new OfferController();
                     if (offerController.hasExistingOffer(item.getItemId(), userId)) {
-                        System.out.println("You have already made an offer for this item.");
+
+//                    	if(offerCont)
+//                        System.out.println("You have already made an offer for this item.");
+//                        return;
+                    	String currentStatus = offerController.getOfferStatus(item.getItemId(), userId);
+
+                        if ("Rejected".equalsIgnoreCase(currentStatus)) {
+                            // If status is 'Rejected', update the offer price and set status to 'Pending'
+                            boolean updated = offerController.updateOfferPriceAndStatus(
+                                item.getItemId(), userId, offerPrice, "Pending");
+
+                            if (updated) {
+                                System.out.println("Offer has been updated to Pending with new price: " + offerPrice);
+                            } else {
+                                System.out.println("Failed to update the offer.");
+                            }
+                        } else {
+                            // If offer already exists but not rejected
+                            System.out.println("You have already made an offer for this item. Status: " + currentStatus);
+                        }
+
                         return;
+                    
                     }
 
                     // Add offer to the database

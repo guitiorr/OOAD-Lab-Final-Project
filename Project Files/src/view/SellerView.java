@@ -28,11 +28,25 @@ public class SellerView {
         Button viewMyItems = new Button("View My Items");
         Button addItem = new Button("Add Item");
         Button viewOffers = new Button("View Offers");
+        Button logout=new Button("logout");
 
         // Organize navigation buttons in an HBox
         HBox navigation = new HBox(10, viewMyItems, addItem, viewOffers);
 
         // Event handlers
+        logout.setOnAction(e -> {
+       	 Stage currentStage = (Stage) logout.getScene().getWindow();
+       	    currentStage.close();
+
+       	    // Membuka stage baru (tampilan utama)
+       	    Main main = new Main();
+       	    Stage newStage = new Stage();
+       	    try {
+       	        main.start(newStage);
+       	    } catch (Exception ex) {
+       	        ex.printStackTrace();
+       	    }
+       });
         viewMyItems.setOnAction(e -> {
             // Navigate to SellerItemView
             SellerItemView sellerItemView = new SellerItemView(username, role);
@@ -51,7 +65,7 @@ public class SellerView {
         });
 
         // Add elements to the layout
-        layout.getChildren().addAll(loggedInAsLabel, roleLabel, navigation);
+        layout.getChildren().addAll(loggedInAsLabel, roleLabel, navigation,logout);
     }
 
     public VBox getView() {

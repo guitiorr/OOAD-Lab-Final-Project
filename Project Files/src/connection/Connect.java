@@ -11,7 +11,7 @@ import java.sql.Statement;
 public class Connect {
     String url = "jdbc:mysql://localhost:3306/CaLouselF";
     String uname = "root";
-    String password = "password";
+    String password = "";
     
     public ResultSet rs;
     public ResultSetMetaData rsm;
@@ -23,7 +23,7 @@ public class Connect {
     
     private Connect() {
         try {
-            Class.forName("com.mysql.jdbc.Driver");
+            Class.forName("com.mysql.cj.jdbc.Driver");
             con = DriverManager.getConnection(this.url, this.uname, this.password);
             st = con.createStatement();
         } catch (Exception e) {

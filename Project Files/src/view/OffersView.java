@@ -47,7 +47,6 @@ public class OffersView {
 
         TableColumn<Offer, String> statusColumn = new TableColumn<>("Status");
         statusColumn.setCellValueFactory(new PropertyValueFactory<>("status"));
-
         TableColumn<Offer, Void> actionColumn = new TableColumn<>("Actions");
         actionColumn.setCellFactory(param -> new TableCell<>() {
             private final HBox buttonBox = new HBox(10);
@@ -62,8 +61,19 @@ public class OffersView {
 
             @Override
             protected void updateItem(Void item, boolean empty) {
+//                super.updateItem(item, empty);
+//                if (empty || getTableRow().getItem() == null) {
+//                    setGraphic(null);
+//                } else {
+//                    Offer currentOffer = getTableRow().getItem();
+//                    if ("Pending".equalsIgnoreCase(currentOffer.getStatus())) {
+//                        setGraphic(buttonBox);
+//                    } else {
+//                        setGraphic(null);
+//                    }
+//                }
                 super.updateItem(item, empty);
-                if (empty || getTableRow().getItem() == null) {
+                if (empty || getTableRow() == null || getTableRow().getItem() == null) {
                     setGraphic(null);
                 } else {
                     Offer currentOffer = getTableRow().getItem();
@@ -76,6 +86,7 @@ public class OffersView {
             }
         });
 
+
         // Add columns to the table
         tableView.getColumns().addAll(
             offerIdColumn,
@@ -85,7 +96,7 @@ public class OffersView {
             statusColumn,
             actionColumn
         );
-        
+
         UserController uc = new UserController();
         
         String sellerId = uc.getUserIdByUsername(username);
@@ -99,6 +110,7 @@ public class OffersView {
 
         // Add components to layout
         layout.getChildren().addAll(returnButton, tableView);
+
     }
 
     private void handleAccept(Offer offer) {
