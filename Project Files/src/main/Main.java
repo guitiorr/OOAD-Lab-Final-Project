@@ -81,7 +81,16 @@ public class Main extends Application {
     public static String getCurrentUsername() {
         return currentUsername;
     }
-
+    public void showInitialLayout() {
+        Button loginButton = new Button("Login");
+        Button registerButton = new Button("Register");
+        mainLayout.getChildren().addAll(loginButton, registerButton);
+        mainLayout.setAlignment(Pos.CENTER);
+    }
+//    public VBox getView() {
+//    	start(Stage PrimaryStage);
+//        return mainLayout;
+//    }
     public static void main(String[] args) {
         launch(args);
     }

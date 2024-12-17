@@ -23,5 +23,13 @@ public class OfferController {
 	 public boolean updateOfferStatus(int offerId, String newStatus) {
 		 return offerDAO.updateOfferStatus(offerId, newStatus);
 	 }
-	
+	 public boolean updateOfferPriceAndStatus(int offerId, double newOfferPrice, String newStatus) {
+		 return offerDAO.updateOfferPriceAndStatus(offerId, newOfferPrice, newStatus);
+	 }
+	 public String getOfferStatus(String itemId, String userId) {
+		 return offerDAO.getOfferStatus(itemId, userId);
+	 }
+	 public boolean updateOfferPriceAndStatus(String itemId, String userId, double newOfferPrice, String newStatus) {
+		 return offerDAO.updateOfferPriceAndStatus(itemId, userId, newOfferPrice, newStatus);
+	 }
 }

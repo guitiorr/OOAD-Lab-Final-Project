@@ -104,4 +104,60 @@ public class OfferDAO {
 
         return false;
     }
+    public boolean updateOfferPriceAndStatus(int offerId, double newOfferPrice, String newStatus) {
+        String query = "UPDATE Offers SET offerPrice = ?, status = ? WHERE offerId = ?";
+
+        try (PreparedStatement statement = connect.preparedStatement(query)) {
+
+            statement.setDouble(1, newOfferPrice);
+            statement.setString(2, newStatus);
+            statement.setInt(3, offerId);
+
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0; // Return true if at least one row was updated
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false; // Return false if the operation fails
+    }
+    public String getOfferStatus(String itemId, String userId) {
+        String query = "SELECT status FROM Offers WHERE itemId = ? AND userId = ?";
+        String status = null;
+
+        try (PreparedStatement stmt = connect.preparedStatement(query)) {
+            stmt.setString(1, itemId);
+            stmt.setString(2, userId);
+
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                status = rs.getString("status"); // Ambil nilai kolom 'status'
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return status; // Return status atau null jika tidak ditemukan
+    }
+    public boolean updateOfferPriceAndStatus(String itemId, String userId, double newOfferPrice, String newStatus) {
+        String query = "UPDATE Offers SET offerPrice = ?, status = ? WHERE itemId = ? AND userId = ?";
+
+        try (PreparedStatement stmt = connect.preparedStatement(query)) {
+            stmt.setDouble(1, newOfferPrice); // Set offerPrice baru
+            stmt.setString(2, newStatus);    // Set status baru
+            stmt.setString(3, itemId);       // Set itemId
+            stmt.setString(4, userId);       // Set userId
+
+            int rowsAffected = stmt.executeUpdate(); // Eksekusi query
+            return rowsAffected > 0; // Return true jika ada baris yang ter-update
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return false; // Return false jika terjadi error atau tidak ada baris yang di-update
+    }
+
+
 }
