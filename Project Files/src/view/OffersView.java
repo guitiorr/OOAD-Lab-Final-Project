@@ -9,6 +9,7 @@ import controller.UserController;
 import javafx.beans.property.SimpleStringProperty;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.geometry.Pos;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableCell;
 import javafx.scene.control.TableColumn;
@@ -78,6 +79,7 @@ import models.Offer;
                     acceptButton.setOnAction(e -> handleAccept(getTableRow().getItem()));
                     rejectButton.setOnAction(e -> handleReject(getTableRow().getItem()));
                     buttonBox.getChildren().addAll(acceptButton, rejectButton);
+                    buttonBox.setAlignment(Pos.CENTER);
                 }
 
                 @Override
@@ -96,7 +98,8 @@ import models.Offer;
                     }
                 }
             });
-
+            actionColumn.setPrefWidth(200);  // Set preferred width for the column to make it wider
+            actionColumn.setMinWidth(150); 
             // Add columns to the table
             tableView.getColumns().addAll(
                 offerIdColumn,

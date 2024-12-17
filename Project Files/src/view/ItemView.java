@@ -5,10 +5,11 @@ import javafx.collections.ObservableList;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.VBox;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.scene.layout.HBox;
 import main.Main;
 import models.Item;
-import models.Offer;
 import controller.ItemController;
 import controller.OfferController;
 import controller.TransactionController;
@@ -18,15 +19,17 @@ import controller.WishlistController;
 public class ItemView {
     private VBox layout;
     private TableView<Item> tableView;
+    private Text validationMessage;
 
-    public ItemView(String username, String role) { // Accept username and role as arguments
+    public ItemView(String username, String role) {
         layout = new VBox(10);
         tableView = new TableView<>();
 
+        validationMessage = new Text();
+        
         // Create the "Return" button to go back to the previous view (BuyerView)
         Button returnButton = new Button("Return");
         returnButton.setOnAction(e -> {
-            // Create and show the BuyerView again with the same username and role
             BuyerView buyerView = new BuyerView(username, role);
             Main.updateLayout(buyerView.getView()); // Switch back to BuyerView
         });
@@ -97,7 +100,6 @@ public class ItemView {
             }
         });
 
-
         // Add columns to the table
         tableView.getColumns().addAll(
             itemIdColumn,
@@ -109,14 +111,12 @@ public class ItemView {
             actionColumn
         );
 
-//        ItemDAO itemDAO = new ItemDAO();
         ItemController itemController = new ItemController();
-        ObservableList<Item> items = FXCollections.observableArrayList(itemController.getAvailableItems()); // Assuming getItems() returns a List<Item>
-
+        ObservableList<Item> items = FXCollections.observableArrayList(itemController.getAvailableItems());
         tableView.setItems(items);
 
         // Add the return button first, then the table to the layout
-        layout.getChildren().addAll(returnButton, tableView);
+        layout.getChildren().addAll(returnButton, tableView, validationMessage);
     }
 
     // Action handlers for buttons
@@ -125,37 +125,31 @@ public class ItemView {
             String username = Main.getCurrentUsername();
             UserController uc = new UserController();
             String userID = uc.getUserIdByUsername(username);
+            validationMessage.setFill(Color.RED);
+
             if (username == null || username.isEmpty()) {
-                System.out.println("No user is logged in. Cannot proceed with the purchase.");
+                validationMessage.setText("No user is logged in. Cannot proceed with the purchase.");
                 return;
             }
 
             if ("Sold".equalsIgnoreCase(item.getItemStatus())) {
-                System.out.println("Item is already sold. Purchase cannot proceed.");
+                validationMessage.setText("Item is already sold. Purchase cannot proceed.");
                 return;
             }
 
-            // Assuming you have a controller instance
             TransactionController tc = new TransactionController();
-
-//            System.out.println("ITEM ID -> " + item.getItemId());
-            
-            // Insert the transaction
             tc.insertTransaction(userID, item.getItemId());
 
-            System.out.println("Successfully purchased item: " + item.getItemName());
-            
+            validationMessage.setFill(Color.GREEN);
+            validationMessage.setText("Successfully purchased item: " + item.getItemName());
+
             ItemController itc = new ItemController();
-            
             itc.switchStatusToSold(item.getItemId());
 
-            // Update the item's status (mark it as sold, etc.)
             item.setItemStatus("Sold");
             tableView.refresh(); // Refresh the table view to reflect the status change
         }
     }
-
-
 
     private void handleMakeOffer(Item item) {
         if (item != null) {
@@ -169,119 +163,108 @@ public class ItemView {
                 try {
                     double offerPrice = Double.parseDouble(input);
 
-                    // Get logged-in user's username
                     String username = Main.getCurrentUsername();
                     if (username == null || username.isEmpty()) {
-                        System.out.println("No user is logged in. Cannot make an offer.");
+                        validationMessage.setFill(Color.RED);
+                        validationMessage.setText("No user is logged in. Cannot make an offer.");
                         return;
                     }
 
-                    // Get userId from UserController
                     UserController userController = new UserController();
                     String userId = userController.getUserIdByUsername(username);
 
                     if (userId == null || userId.isEmpty()) {
-                        System.out.println("Failed to retrieve user ID.");
+                        validationMessage.setFill(Color.RED);
+                        validationMessage.setText("Failed to retrieve user ID.");
                         return;
                     }
 
-                    // Validate if the user has already made an offer for this item
                     OfferController offerController = new OfferController();
                     if (offerController.hasExistingOffer(item.getItemId(), userId)) {
+//                        String currentStatus = offerController.getOfferStatus(item.getItemId(), userId);
+//                        validationMessage.setFill(Color.RED);
+//                        validationMessage.setText("You already have an offer for this item. Status: " + currentStatus);
 
-//                    	if(offerCont)
-//                        System.out.println("You have already made an offer for this item.");
-//                        return;
-                    	String currentStatus = offerController.getOfferStatus(item.getItemId(), userId);
+//             
+                        String currentStatus = offerController.getOfferStatus(item.getItemId(), userId);
 
-                        if ("Rejected".equalsIgnoreCase(currentStatus)) {
-                            // If status is 'Rejected', update the offer price and set status to 'Pending'
-                            boolean updated = offerController.updateOfferPriceAndStatus(
-                                item.getItemId(), userId, offerPrice, "Pending");
+                             if ("Rejected".equalsIgnoreCase(currentStatus)) {
+                                 // If status is 'Rejected', update the offer price and set status to 'Pending'
+                                 boolean updated = offerController.updateOfferPriceAndStatus(item.getItemId(), userId, offerPrice, "Pending");
+                             	 validationMessage.setFill(Color.GREEN);
+                                 validationMessage.setText("Your rejected offer has been updated! Status is now pending.");
+                                 return;
 
-                            if (updated) {
-                                System.out.println("Offer has been updated to Pending with new price: " + offerPrice);
-                            } else {
-                                System.out.println("Failed to update the offer.");
-                            }
-                        } else {
-                            // If offer already exists but not rejected
-                            System.out.println("You have already made an offer for this item. Status: " + currentStatus);
-                        }
-
+                             }
+                         	 validationMessage.setFill(Color.RED);
+                         	 validationMessage.setText("You already have an offer for this item. Status: " + currentStatus);
                         return;
-                    
                     }
 
-                    // Add offer to the database
                     boolean success = offerController.addOffer(item.getItemId(), userId, offerPrice);
                     if (success) {
-                        System.out.println("Offer made successfully: " + offerPrice);
+                        validationMessage.setFill(Color.GREEN);
+                        validationMessage.setText("Offer made successfully: " + offerPrice);
                     } else {
-                        System.out.println("Failed to make the offer.");
+                        validationMessage.setFill(Color.RED);
+                        validationMessage.setText("Failed to make the offer.");
                     }
 
                 } catch (NumberFormatException e) {
-                    System.out.println("Invalid offer price entered.");
+                    validationMessage.setFill(Color.RED);
+                    validationMessage.setText("Invalid offer price entered.");
                 }
             });
-        } else {
-            System.out.println("No item selected. Cannot make an offer.");
         }
     }
 
-
-
     private void handleAddToWishlist(Item item, Button wishlistButton) {
         if (item != null) {
-            // Retrieve the current logged-in user's username
             String username = Main.getCurrentUsername();
             if (username == null || username.isEmpty()) {
-                System.out.println("No user is logged in. Cannot add item to wishlist.");
+                validationMessage.setFill(Color.RED);
+                validationMessage.setText("No user is logged in. Cannot add item to wishlist.");
                 return;
             }
 
-            // Retrieve user ID from UserController
             UserController userController = new UserController();
             String userID = userController.getUserIdByUsername(username);
 
             if (userID == null || userID.isEmpty()) {
-                System.out.println("Failed to retrieve user ID. Cannot add item to wishlist.");
+                validationMessage.setFill(Color.RED);
+                validationMessage.setText("Failed to retrieve user ID.");
                 return;
             }
 
-            // Check if the item is already in the user's wishlist
             WishlistController wishlistController = new WishlistController();
             boolean alreadyWishlisted = wishlistController.isItemInWishlist(item.getItemId(), userID);
 
             if (alreadyWishlisted) {
-                // Remove item from wishlist
-                boolean success = wishlistController.removeFromWishlist(item.getItemId(), userID); // Implement this method in WishlistController
+                boolean success = wishlistController.removeFromWishlist(item.getItemId(), userID);
                 if (success) {
-                    System.out.println("Item removed from wishlist: " + item.getItemName());
                     wishlistButton.setText("Add to Wishlist");
+                    validationMessage.setFill(Color.GREEN);
+                    validationMessage.setText("Item removed from wishlist: " + item.getItemName());
                 } else {
-                    System.out.println("Failed to remove item from wishlist: " + item.getItemName());
+                    validationMessage.setFill(Color.RED);
+                    validationMessage.setText("Failed to remove item from wishlist.");
                 }
             } else {
-                // Add item to wishlist
-                String wishlistID = generateUniqueWishlistID(); // Generate a unique ID for the wishlist entry
+                String wishlistID = generateUniqueWishlistID();
                 boolean success = wishlistController.addToWishlist(wishlistID, item.getItemId(), userID);
                 if (success) {
-                    System.out.println("Item successfully added to wishlist: " + item.getItemName());
                     wishlistButton.setText("Remove from Wishlist");
+                    validationMessage.setFill(Color.GREEN);
+                    validationMessage.setText("Item added to wishlist: " + item.getItemName());
                 } else {
-                    System.out.println("Failed to add item to wishlist: " + item.getItemName());
+                    validationMessage.setFill(Color.RED);
+                    validationMessage.setText("Failed to add item to wishlist.");
                 }
             }
-        } else {
-            System.out.println("No item selected. Cannot add to wishlist.");
         }
     }
 
-
     private String generateUniqueWishlistID() {
-        // Example: Generate a unique wishlist ID using a timestamp or UUID
         return "WL-" + System.currentTimeMillis();
     }
 
