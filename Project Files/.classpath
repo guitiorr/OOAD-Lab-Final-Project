@@ -6,52 +6,52 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/User/Desktop/LASER BINUS/SEMESTER5/OOADLAB/openjfx-17.0.7_windows-x64_bin-sdk/javafx-sdk-17.0.7/lib/javafx.base.jar">
+	<classpathentry kind="lib" path="D:/Kuliah/Semester 5/Object Oriented Analysis &amp; Design/LAB FINAL PROJECT/be992b30-4b38-4361-8404-25f2d6912754_bd69d85c-5d60-ef11-a1bf-9440c921bcaf_622d7db4-c910-ec11-90f0-d8d38/Project Files/mysql-connector-j-9.0.0.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/User/Desktop/LASER BINUS/SEMESTER5/OOADLAB/openjfx-17.0.7_windows-x64_bin-sdk/javafx-sdk-17.0.7/lib/javafx.controls.jar">
+	<classpathentry kind="lib" path="D:/openjfx-17.0.7_windows-x64_bin-sdk/javafx-sdk-17.0.7/lib/javafx.base.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/User/Desktop/LASER BINUS/SEMESTER5/OOADLAB/openjfx-17.0.7_windows-x64_bin-sdk/javafx-sdk-17.0.7/lib/javafx.fxml.jar">
+	<classpathentry kind="lib" path="D:/openjfx-17.0.7_windows-x64_bin-sdk/javafx-sdk-17.0.7/lib/javafx.controls.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/User/Desktop/LASER BINUS/SEMESTER5/OOADLAB/openjfx-17.0.7_windows-x64_bin-sdk/javafx-sdk-17.0.7/lib/javafx.graphics.jar">
+	<classpathentry kind="lib" path="D:/openjfx-17.0.7_windows-x64_bin-sdk/javafx-sdk-17.0.7/lib/javafx.fxml.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/User/Desktop/LASER BINUS/SEMESTER5/OOADLAB/openjfx-17.0.7_windows-x64_bin-sdk/javafx-sdk-17.0.7/lib/javafx.media.jar">
+	<classpathentry kind="lib" path="D:/openjfx-17.0.7_windows-x64_bin-sdk/javafx-sdk-17.0.7/lib/javafx.graphics.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/User/Desktop/LASER BINUS/SEMESTER5/OOADLAB/openjfx-17.0.7_windows-x64_bin-sdk/javafx-sdk-17.0.7/lib/javafx.swing.jar">
+	<classpathentry kind="lib" path="D:/openjfx-17.0.7_windows-x64_bin-sdk/javafx-sdk-17.0.7/lib/javafx.media.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/User/Desktop/LASER BINUS/SEMESTER5/OOADLAB/openjfx-17.0.7_windows-x64_bin-sdk/javafx-sdk-17.0.7/lib/javafx.web.jar">
+	<classpathentry kind="lib" path="D:/openjfx-17.0.7_windows-x64_bin-sdk/javafx-sdk-17.0.7/lib/javafx.swing.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/User/Desktop/LASER BINUS/SEMESTER5/OOADLAB/openjfx-17.0.7_windows-x64_bin-sdk/javafx-sdk-17.0.7/lib/javafx-swt.jar">
+	<classpathentry kind="lib" path="D:/openjfx-17.0.7_windows-x64_bin-sdk/javafx-sdk-17.0.7/lib/javafx.web.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/User/Desktop/LASER BINUS/SEMESTER5/OOADLAB/openjfx-17.0.7_windows-x64_bin-sdk/javafx-sdk-17.0.7/lib/jfxtras-labs-9.0-r1.jar">
+	<classpathentry kind="lib" path="D:/openjfx-17.0.7_windows-x64_bin-sdk/javafx-sdk-17.0.7/lib/javafx-swt.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="C:/Users/User/Desktop/LASER BINUS/SEMESTER5/OOADLAB/tugas akhir/OOAD-Lab-Final-Project/Project Files/mysql-connector-j-9.0.0.jar">
+	<classpathentry kind="lib" path="D:/openjfx-17.0.7_windows-x64_bin-sdk/javafx-sdk-17.0.7/lib/jfxtras-labs-9.0-r1.jar">
 		<attributes>
 			<attribute name="module" value="true"/>
 		</attributes>

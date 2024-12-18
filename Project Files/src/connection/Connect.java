@@ -11,7 +11,7 @@ import java.sql.Statement;
 public class Connect {
     String url = "jdbc:mysql://localhost:3306/CaLouselF";
     String uname = "root";
-    String password = "";
+    String password = "password";
     
     public ResultSet rs;
     public ResultSetMetaData rsm;
