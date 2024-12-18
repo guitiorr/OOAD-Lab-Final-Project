@@ -268,15 +268,27 @@ public class ItemDAO {
     }
 	
 	public void deleteItem(String itemId) {
-	    String query = "DELETE FROM Item WHERE itemId = ?";
+	    // Queries for deleting from SellerItems and Item
+	    String deleteSellerItemsQuery = "DELETE FROM SellerItems WHERE itemId = ?";
+	    String deleteItemQuery = "DELETE FROM Item WHERE itemId = ?";
 
-	    try (PreparedStatement stmt = connect.preparedStatement(query)) {
-	        stmt.setString(1, itemId);
-	        stmt.executeUpdate();
+	    try (
+	        // Prepare statements for both queries
+	        PreparedStatement deleteSellerItemsStmt = connect.preparedStatement(deleteSellerItemsQuery);
+	        PreparedStatement deleteItemStmt = connect.preparedStatement(deleteItemQuery)
+	    ) {
+	        // Bind itemId for SellerItems deletion
+	        deleteSellerItemsStmt.setString(1, itemId);
+	        deleteSellerItemsStmt.executeUpdate();
+
+	        // Bind itemId for Item deletion
+	        deleteItemStmt.setString(1, itemId);
+	        deleteItemStmt.executeUpdate();
 	    } catch (SQLException e) {
 	        e.printStackTrace();
 	    }
 	}
+
 
 
 

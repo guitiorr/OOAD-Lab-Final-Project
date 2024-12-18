@@ -63,9 +63,13 @@ public class SellerItemView {
         updateButton.setOnAction(e -> {
             Item selectedItem = tableView.getSelectionModel().getSelectedItem();
             if (selectedItem != null) {
-                // Open a form to update the selected item
-                UpdateItemView updateItemView = new UpdateItemView(selectedItem, username, role);
-                Main.updateLayout(updateItemView.getView());
+                if ("Available".equals(selectedItem.getItemStatus())) {
+                    // Open a form to update the selected item
+                    UpdateItemView updateItemView = new UpdateItemView(selectedItem, username, role);
+                    Main.updateLayout(updateItemView.getView());
+                } else {
+                    showAlert(Alert.AlertType.WARNING, "Item Not Available", "Only items with 'Available' status can be updated.");
+                }
             } else {
                 showAlert(Alert.AlertType.WARNING, "No Item Selected", "Please select an item to update.");
             }
@@ -75,16 +79,20 @@ public class SellerItemView {
         deleteButton.setOnAction(e -> {
             Item selectedItem = tableView.getSelectionModel().getSelectedItem();
             if (selectedItem != null) {
-                // Confirm deletion
-                Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION, 
-                    "Are you sure you want to delete this item?", 
-                    ButtonType.YES, ButtonType.NO);
-                confirmationAlert.showAndWait().ifPresent(response -> {
-                    if (response == ButtonType.YES) {
-                        ic.deleteItem(selectedItem.getItemId()); // Delete from database
-                        sellerItems.remove(selectedItem); // Update TableView
-                    }
-                });
+                if ("Available".equals(selectedItem.getItemStatus())) {
+                    // Confirm deletion
+                    Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION, 
+                        "Are you sure you want to delete this item?", 
+                        ButtonType.YES, ButtonType.NO);
+                    confirmationAlert.showAndWait().ifPresent(response -> {
+                        if (response == ButtonType.YES) {
+                            ic.deleteItem(selectedItem.getItemId()); // Delete from database
+                            sellerItems.remove(selectedItem); // Update TableView
+                        }
+                    });
+                } else {
+                    showAlert(Alert.AlertType.WARNING, "Item Not Available", "Only items with 'Available' status can be deleted.");
+                }
             } else {
                 showAlert(Alert.AlertType.WARNING, "No Item Selected", "Please select an item to delete.");
             }
