@@ -60,4 +60,12 @@ public class ItemController {
 		return itemDAO.updateItemPrice(itemId, newPrice);
 	}
 	
+	public void updateItem(Item item) {
+		itemDAO.updateItem(item);
+	}
+
+	public void deleteItem(String itemId) {
+		itemDAO.deleteItem(itemId);
+	}
+	
 }

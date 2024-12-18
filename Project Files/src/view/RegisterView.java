@@ -2,6 +2,7 @@ package view;
 
 import controller.UserController;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.*;
 import javafx.scene.layout.GridPane;
 
@@ -66,7 +67,7 @@ public class RegisterView {
         // Validation Message
         Label validationLabel = new Label();
         gridPane.add(validationLabel, 1, 7);
-
+        gridPane.setAlignment(Pos.CENTER);
         // Register Button Action
         registerButton.setOnAction(e -> {
             String username = usernameField.getText();

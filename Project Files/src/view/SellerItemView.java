@@ -4,10 +4,13 @@ import controller.ItemController;
 import controller.UserController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import main.Main;
 import models.Item;
@@ -15,6 +18,7 @@ import models.Item;
 public class SellerItemView {
     private VBox layout;
     private TableView<Item> tableView;
+    private ObservableList<Item> sellerItems;
 
     public SellerItemView(String username, String role) {
         layout = new VBox(10);
@@ -42,23 +46,74 @@ public class SellerItemView {
 
         // Add columns to table
         tableView.getColumns().addAll(itemIdColumn, itemNameColumn, itemPriceColumn, itemStatusColumn);
-        
+
         UserController uc = new UserController();
-        
         String userId = uc.getUserIdByUsername(username);
 
         // Fetch and display seller's items
         ItemController ic = new ItemController();
-        ObservableList<Item> sellerItems = FXCollections.observableArrayList(
-            ic.getItemsBySeller(userId) // This method should return a List<Item> for the seller
-        );
+        sellerItems = FXCollections.observableArrayList(ic.getItemsBySeller(userId)); // Fetch items from the database
         tableView.setItems(sellerItems);
 
+        // Create action buttons
+        Button updateButton = new Button("Update Item");
+        Button deleteButton = new Button("Delete Item");
+
+        // Update item functionality
+        updateButton.setOnAction(e -> {
+            Item selectedItem = tableView.getSelectionModel().getSelectedItem();
+            if (selectedItem != null) {
+                if ("Available".equals(selectedItem.getItemStatus())) {
+                    // Open a form to update the selected item
+                    UpdateItemView updateItemView = new UpdateItemView(selectedItem, username, role);
+                    Main.updateLayout(updateItemView.getView());
+                } else {
+                    showAlert(Alert.AlertType.WARNING, "Item Not Available", "Only items with 'Available' status can be updated.");
+                }
+            } else {
+                showAlert(Alert.AlertType.WARNING, "No Item Selected", "Please select an item to update.");
+            }
+        });
+
+        // Delete item functionality
+        deleteButton.setOnAction(e -> {
+            Item selectedItem = tableView.getSelectionModel().getSelectedItem();
+            if (selectedItem != null) {
+                if ("Available".equals(selectedItem.getItemStatus())) {
+                    // Confirm deletion
+                    Alert confirmationAlert = new Alert(Alert.AlertType.CONFIRMATION, 
+                        "Are you sure you want to delete this item?", 
+                        ButtonType.YES, ButtonType.NO);
+                    confirmationAlert.showAndWait().ifPresent(response -> {
+                        if (response == ButtonType.YES) {
+                            ic.deleteItem(selectedItem.getItemId()); // Delete from database
+                            sellerItems.remove(selectedItem); // Update TableView
+                        }
+                    });
+                } else {
+                    showAlert(Alert.AlertType.WARNING, "Item Not Available", "Only items with 'Available' status can be deleted.");
+                }
+            } else {
+                showAlert(Alert.AlertType.WARNING, "No Item Selected", "Please select an item to delete.");
+            }
+        });
+
+        // Layout for action buttons
+        HBox buttonLayout = new HBox(10, updateButton, deleteButton);
+
         // Add components to layout
-        layout.getChildren().addAll(returnButton, tableView);
+        layout.getChildren().addAll(returnButton, tableView, buttonLayout);
     }
 
     public VBox getView() {
         return layout;
+    }
+
+    private void showAlert(Alert.AlertType type, String title, String message) {
+        Alert alert = new Alert(type);
+        alert.setTitle(title);
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
     }
 }
