@@ -30,7 +30,7 @@ public class UserDAO {
 
 	
     public void insertUser(User user) {
-        String query = "INSERT INTO Users (id, username, phoneNumber, address, role, password) VALUES (?, ?, ?, ?, ?, ?)";
+        String query = "INSERT INTO Users (userId, username, phoneNumber, address, role, password) VALUES (?, ?, ?, ?, ?, ?)";
         try (PreparedStatement ps = connect.preparedStatement(query)) {
             ps.setString(1, user.getID());
             ps.setString(2, user.getUsername());
