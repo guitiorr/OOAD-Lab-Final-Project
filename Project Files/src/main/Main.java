@@ -87,10 +87,7 @@ public class Main extends Application {
         mainLayout.getChildren().addAll(loginButton, registerButton);
         mainLayout.setAlignment(Pos.CENTER);
     }
-//    public VBox getView() {
-//    	start(Stage PrimaryStage);
-//        return mainLayout;
-//    }
+//   
     public static void main(String[] args) {
         launch(args);
     }
